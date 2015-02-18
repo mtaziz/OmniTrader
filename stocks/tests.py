@@ -3,6 +3,8 @@ from django.test import TestCase
 from stocks.models import Stock
 
 import json
+import random
+import time
 
 class StockTestCase(TestCase):
     def setUp(self):
@@ -25,12 +27,23 @@ class StockTestCase(TestCase):
                 }
                 data.append(obj)
         fp.close()
-
+        
+        '''
         with open('stocks/fixtures/stocklist.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
-
+        '''
+    '''    
     def test_stock(self):
         print("Test stock...")
         stock = Stock.objects.get(ticker="SH600030")
         print(stock.name)
         #self.assertEqual(stock.name, '600030')
+    '''
+    
+    def test_random_output(self):
+        print("Test random stock...")
+
+        sample = random.sample(list(Stock.objects.all()),50)
+        for stock in sample:
+            print(stock.ticker, stock.name)
+            time.sleep(2)
