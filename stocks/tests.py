@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from stocks.models import Stock
+from stocks.models import Stock,Tag
 
 import json
 import random
@@ -27,11 +27,31 @@ class StockTestCase(TestCase):
                 }
                 data.append(obj)
         fp.close()
-        
         '''
         with open('stocks/fixtures/stocklist.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
         '''
+
+        fp = open('stocks/assets/taglist.csv')
+        count = 0
+        data = []
+        for line in fp:
+            raw = line.split(',')
+            count += 1
+            Tag.objects.create(name=raw[0].rstrip()).save()
+            obj = {
+                "model": "stocks.Tag",
+                "pk": count,
+                "fields": {
+                    "name": raw[0].rstrip()
+                }
+            }
+            data.append(obj)
+        fp.close()
+        with open('stocks/fixtures/taglist.json', 'w', encoding='utf-8') as outfile:
+            json.dump(data, outfile)
+        
+        
     '''    
     def test_stock(self):
         print("Test stock...")
@@ -44,6 +64,16 @@ class StockTestCase(TestCase):
         print("Test random stock...")
 
         sample = random.sample(list(Stock.objects.all()),50)
+        hits = 0
         for stock in sample:
-            print(stock.ticker, stock.name)
-            time.sleep(2)
+            print(stock.name)
+            if stock.ticker.__contains__(input()) == 2 :
+                hits += 1
+                continue
+            else:
+                print(stock.ticker)
+                print()
+
+            #time.sleep(2)
+            
+        print(hits )
