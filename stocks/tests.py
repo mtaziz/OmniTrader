@@ -8,6 +8,15 @@ import time
 
 class StockTestCase(TestCase):
     def setUp(self):
+        print("Loading rzrq data...")
+        fp = open('stocks/assets/rzrq.csv')
+        count = 0
+        for line in fp:
+            raw = line.split(',')
+            count += 1
+            Stock.objects.create(name=raw[2].rstrip(), ticker=raw[1].rstrip()).save()
+    '''
+    def createFiles(self):
         data = []
         print("Setting up Stock tests...") 
         fp = open('stocks/assets/stocklist.csv')
@@ -27,10 +36,8 @@ class StockTestCase(TestCase):
                 }
                 data.append(obj)
         fp.close()
-        '''
         with open('stocks/fixtures/stocklist.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
-        '''
 
         fp = open('stocks/assets/taglist.csv')
         count = 0
@@ -50,8 +57,8 @@ class StockTestCase(TestCase):
         fp.close()
         with open('stocks/fixtures/taglist.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
-        
-        
+    '''
+    
     '''    
     def test_stock(self):
         print("Test stock...")
@@ -62,18 +69,26 @@ class StockTestCase(TestCase):
     
     def test_random_output(self):
         print("Test random stock...")
-
-        sample = random.sample(list(Stock.objects.all()),50)
-        hits = 0
-        for stock in sample:
-            print(stock.name)
-            if stock.ticker.__contains__(input()) == 2 :
-                hits += 1
-                continue
-            else:
-                print(stock.ticker)
-                print()
-
-            #time.sleep(2)
+        flag = 'y'
+        while flag == 'y':
+            sample = random.sample(list(Stock.objects.all()),10)
+            hits = 0
+            while sample:
+                data = []
+                for stock in sample:
+                    print(stock.name,end=': ')
+                    if stock.ticker == input() :
+                        hits += 1
+                        continue
+                    else:
+                        data.append(stock)
+                        print(stock.ticker)
+                        print()
+    
+                    #time.sleep(2)
+                print('Hits: ', hits )
+                sample = random.sample(list(data),len(data))
             
-        print(hits )
+            print('Would you like another round?(y/n)')
+            flag = input()
+        
