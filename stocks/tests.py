@@ -70,24 +70,31 @@ class StockTestCase(TestCase):
     def test_random_output(self):
         print("Test random stock...")
         flag = 'y'
+        total = 7
         while flag == 'y':
-            sample = random.sample(list(Stock.objects.all()),10)
-            hits = 0
+            sample = random.sample(list(Stock.objects.all()),total)
             while sample:
-                data = []
+                hits = 0
+                #data = []
                 for stock in sample:
                     print(stock.name,end=': ')
+                    start = time.time()
                     if stock.ticker == input() :
+                        end = time.time()
+                        print(end-start)
                         hits += 1
                         continue
                     else:
-                        data.append(stock)
+                        #data.append(stock)
                         print(stock.ticker)
-                        print()
     
                     #time.sleep(2)
                 print('Hits: ', hits )
-                sample = random.sample(list(data),len(data))
+                if hits == total:
+                    break
+                #sample = random.sample(list(data),len(data))
+                sample = random.sample(sample, total)
+                
             
             print('Would you like another round?(y/n)')
             flag = input()
