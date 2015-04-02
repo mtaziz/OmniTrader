@@ -62,9 +62,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'omnitrader-qa',
-        'USER': 'omnitraderq',
+        'USER': 'omnitrader-qa',
         'PASSWORD': 'omnitraderq',
-        'HOST': 'cragguidebook.mysql.rds.aliyuncs.com',
+        'HOST': 'localhost',
         'PORT': '3306'
     }
 #    'aliyun': {
