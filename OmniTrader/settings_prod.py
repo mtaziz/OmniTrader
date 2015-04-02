@@ -61,9 +61,9 @@ WSGI_APPLICATION = 'OmniTrader.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'omnitrader-qa',
-        'USER': 'omnitraderq',
-        'PASSWORD': 'omnitraderq',
+        'NAME': 'omnitrader',
+        'USER': 'omnitrader',
+        'PASSWORD': 'omnitraderp',
         'HOST': 'cragguidebook.mysql.rds.aliyuncs.com',
         'PORT': '3306'
     }
