@@ -15,6 +15,15 @@ class StockTestCase(TestCase):
             raw = line.split(',')
             count += 1
             Stock.objects.create(name=raw[2].rstrip(), ticker=raw[1].rstrip()).save()
+        '''
+        print("Loading zxg data...")
+        fp = open('stocks/assets/zxg.csv')
+        count = 0
+        for line in fp:
+            raw = line.split(',')
+            count += 1
+            Stock.objects.create(name=raw[1].rstrip(), ticker=raw[0].rstrip()).save()
+        '''
     '''
     def createFiles(self):
         data = []
@@ -71,8 +80,9 @@ class StockTestCase(TestCase):
         print("Test random stock...")
         flag = 'y'
         total = 7
+        book =  random.sample(list(Stock.objects.all()),100)
         while flag == 'y':
-            sample = random.sample(list(Stock.objects.all()),total)
+            sample = random.sample(book,total)
             while sample:
                 hits = 0
                 #data = []
@@ -97,5 +107,5 @@ class StockTestCase(TestCase):
                 
             
             print('Would you like another round?(y/n)')
-            flag = input()
+            flag = input().rstrip()
         
