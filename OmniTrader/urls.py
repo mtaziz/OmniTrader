@@ -8,4 +8,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^stocks/', include('stocks.urls')),
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
 )

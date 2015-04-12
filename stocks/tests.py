@@ -14,6 +14,7 @@ class StockTestCase(TestCase):
         for line in fp:
             raw = line.split(',')
             count += 1
+            print(raw[2].rstrip().encode('utf8'))
             Stock.objects.create(name=raw[2].rstrip(), ticker=raw[1].rstrip()).save()
         '''
         print("Loading zxg data...")
