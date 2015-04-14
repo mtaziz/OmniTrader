@@ -8,14 +8,14 @@ import time
 
 class StockTestCase(TestCase):
     def setUp(self):
-        print("Loading rzrq data...")
-        fp = open('stocks/assets/rzrq.csv')
+        print("Loading haitong data...")
+        fp = open('stocks/assets/haitong.csv')
         count = 0
         for line in fp:
             raw = line.split(',')
             count += 1
-            print(raw[2].rstrip().encode('utf8'))
-            Stock.objects.create(name=raw[2].rstrip(), ticker=raw[1].rstrip()).save()
+            #print(raw[1].rstrip())
+            Stock.objects.create(name=raw[1].rstrip(), ticker=raw[0].rstrip()).save()
         '''
         print("Loading zxg data...")
         fp = open('stocks/assets/zxg.csv')
@@ -81,7 +81,8 @@ class StockTestCase(TestCase):
         print("Test random stock...")
         flag = 'y'
         total = 7
-        book =  random.sample(list(Stock.objects.all()),100)
+        #book =  random.sample(list(Stock.objects.all()),100)
+        book = list(Stock.objects.all())
         while flag == 'y':
             sample = random.sample(book,total)
             while sample:

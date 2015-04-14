@@ -66,7 +66,9 @@ DATABASES = {
         'USER': 'omnitrader-qa',
         'PASSWORD': 'omnitraderq',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        'TEST_CHARSET': "utf8",
+        'TEST_COLLATION': "utf8_general_ci",
     }
 #    'aliyun': {
 #        'ENGINE': 'django.db.backends.mysql',
