@@ -5,9 +5,11 @@ from stocks.models import Stock,Tag
 import json
 import random
 import time
+import os
 
 class StockTestCase(TestCase):
     def setUp(self):
+        self.createFiles()
         print("Loading haitong data...")
         fp = open('stocks/assets/haitong.csv')
         count = 0
@@ -25,30 +27,75 @@ class StockTestCase(TestCase):
             count += 1
             Stock.objects.create(name=raw[1].rstrip(), ticker=raw[0].rstrip()).save()
         '''
-    '''
+        
     def createFiles(self):
+
+        print("Do you want to generate data from files?(y/n)")
+        flag = input().rstrip()
+        if("y"!=flag):
+            return
+        
+        files = []
+
+        i = 0
+        print("The following csv files are available under stocks/assets")
+        for dirname, dirnames, filenames in os.walk('./stocks/assets'):
+            #for subdirname in dirnames:
+            #    print(os.path.join(dirname, subdirname))
+                
+            
+            for filename in filenames:
+                if filename.endswith(".csv"):
+                    i += 1
+                    files.append(os.path.join(dirname, filename))
+                    print("{}. {}".format(i,filename))
+        print("Input the id of the file you want to import:")
+        selection = int(input())
+        
+        if selection > i or selection <=0:
+            print("Selection out of range.")
+            return
+            
+        
+        print("Input the column index of the ticker(start from 0):")
+        ticker_col = int(input())
+        
+        print("Input the column index of the name(start from 0):")
+        name_col = int(input())
+
+
+        print("Input the column index of the rzrq indicator(start from 0):")
+        rzrq_col = int(input())
+        
+        print("Input the output filename(end with .json):")
+        output = input()
+        
+        print("Generating Json file from {}...".format(files[selection-1]))
+
         data = []
-        print("Setting up Stock tests...") 
-        fp = open('stocks/assets/stocklist.csv')
+        fp = open(files[selection-1])
         count = 0
         for line in fp:
             raw = line.split(',')
             if len(raw)>1:
                 count += 1
-                Stock.objects.create(name=raw[1].rstrip(), ticker=raw[0].rstrip()).save()
+                rzrq_flag = False if raw[rzrq_col].rstrip()=="" else True
+                #Stock.objects.create(name=raw[name_col].rstrip(), ticker=raw[ticker_col].rstrip(), rzrq=rzrq_flag).save()
                 obj = {
                     "model": "stocks.Stock",
                     "pk": count,
                     "fields": {
-                        "name": raw[1].rstrip(),
-                        "ticker": raw[0].rstrip()
+                        "name": raw[name_col].rstrip(),
+                        "ticker": raw[ticker_col].rstrip(),
+                        "rzrq": rzrq_flag
                     }
                 }
                 data.append(obj)
         fp.close()
-        with open('stocks/fixtures/stocklist.json', 'w', encoding='utf-8') as outfile:
+        print("{} stocks recorded".format(count))
+        with open("stocks/fixtures/{}".format(output), 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
-
+        '''
         fp = open('stocks/assets/taglist.csv')
         count = 0
         data = []
@@ -67,15 +114,7 @@ class StockTestCase(TestCase):
         fp.close()
         with open('stocks/fixtures/taglist.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile)
-    '''
-    
-    '''    
-    def test_stock(self):
-        print("Test stock...")
-        stock = Stock.objects.get(ticker="SH600030")
-        print(stock.name)
-        #self.assertEqual(stock.name, '600030')
-    '''
+        '''
     
     def test_random_output(self):
         print("Test random stock...")
