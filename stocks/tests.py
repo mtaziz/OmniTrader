@@ -8,8 +8,10 @@ import time
 import os
 
 class StockTestCase(TestCase):
+    fixtures = ['all-stocks.json']
     def setUp(self):
         self.createFiles()
+        '''
         print("Loading haitong data...")
         fp = open('stocks/assets/haitong.csv')
         count = 0
@@ -18,7 +20,6 @@ class StockTestCase(TestCase):
             count += 1
             #print(raw[1].rstrip())
             Stock.objects.create(name=raw[1].rstrip(), ticker=raw[0].rstrip()).save()
-        '''
         print("Loading zxg data...")
         fp = open('stocks/assets/zxg.csv')
         count = 0
@@ -121,27 +122,36 @@ class StockTestCase(TestCase):
         flag = 'y'
         total = 7
         #book =  random.sample(list(Stock.objects.all()),100)
-        book = list(Stock.objects.all())
-        while flag == 'y':
+        book = list(Stock.objects.filter(rzrq=1))
+        while flag == 'y' or flag == '1':
             sample = random.sample(book,total)
             while sample:
                 hits = 0
                 #data = []
+                quit = False
                 for stock in sample:
                     print(stock.name,end=': ')
                     start = time.time()
-                    if stock.ticker == input() :
+                    while(len(stock.ticker)<6):
+                        stock.ticker = "0"+stock.ticker
+                    token = input()
+                    if stock.ticker == token:
                         end = time.time()
                         print(end-start)
                         hits += 1
                         continue
+                    elif '000' == token:
+                        quit = True
+                        break
+                        
                     else:
                         #data.append(stock)
                         print(stock.ticker)
     
                     #time.sleep(2)
                 print('Hits: ', hits )
-                if hits == total:
+                if hits == total or quit==True:
+                    quit = False
                     break
                 #sample = random.sample(list(data),len(data))
                 sample = random.sample(sample, total)
