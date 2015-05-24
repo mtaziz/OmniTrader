@@ -1,6 +1,6 @@
 # QA settings
 
-from .settings import *
+from OmniTrader.settings import *
 
 DATABASES = {
     'default': {

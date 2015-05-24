@@ -1,6 +1,6 @@
 # Prod settings
 
-from .settings import *
+from OmniTrader.settings import *
 DEBUG = false
 TEMPLATE_DEBUG = false
 
