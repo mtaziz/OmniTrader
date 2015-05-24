@@ -1,8 +1,8 @@
 # Prod settings
 
 from OmniTrader.settings import *
-DEBUG = false
-TEMPLATE_DEBUG = false
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 
 DATABASES = {
