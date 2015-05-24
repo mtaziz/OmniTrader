@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'django_admin_bootstrapped',
+    'autocomplete_light',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,13 +66,6 @@ DATABASES = {
         'TEST_CHARSET': "utf8",
         'TEST_COLLATION': "utf8_general_ci",
     }
-#    'aliyun': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'USER': 'omnitraderq',
-#        'PASSWORD': 'omnitraderq',
-#        'HOST': 'cragguidebook.mysql.rds.aliyuncs.com',
-#        'PORT': '3306'
-#    }
 }
 
 # Internationalization
