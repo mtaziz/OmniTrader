@@ -8,9 +8,10 @@ from .models import Stock, Tag
 def index(request):
     return HttpResponse("Hello, world. You're at the stocks index.")
 
-def detail(request, stock_id):
+
+def detail(request, stock_ticker):
     try:
-        stock = Stock.objects.get(pk=stock_id)
+        stock = Stock.objects.get(ticker=stock_ticker)
     except Stock.DoesNotExist:
         raise Http404("Stock does not exist")
     return render(request, 'stocks/detail.html', {'stock': stock})
@@ -23,3 +24,24 @@ def tags(request, tag_id):
         raise Http404("Tag does not exist")
     return render(request, 'tags/detail.html', {'tag': tag})
 
+
+def attachtag(request, stock_ticker):
+
+    try:
+        stock = Stock.objects.get(ticker=stock_ticker)
+
+    except Stock.DoesNotExist:
+        raise Http404("Stock does not exist")
+    
+    if request.method == 'POST':
+        try:
+            tag = Tag.objects.get(pk=1)
+            #tag.stocks.add(stock)
+            #tag.save()
+        except Tag.DoesNotExist:
+            raise Http404("Tag does not exist")
+        return render(request, 'stocks/detail.html', {'stock': stock})
+    else:
+        return render(request, 'stocks/attachtag.html', {'stock': stock})
+    
+        
