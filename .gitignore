@@ -74,7 +74,6 @@ target/
 /obj/Debug/__init__.py
 /obj/Debug/__main__.py
 /OmniTrader
-/OmniTrader/settings_uat.py
 /OmniTrader.pyproj
 /OmniTrader.sln
 /OmniTrader.v12.suo
