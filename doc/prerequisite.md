@@ -8,7 +8,10 @@ pip3 install django-autocomplete-light
 
 
 # Run Django in different environment
+Linux/Mac:
 export DJANGO_SETTINGS_MODULE=OmniTrader.settings_qa
+Windows:
+set DJANGO_SETTINGS_MODULE=OmniTrader.settings_uat
 
 # Connecting app to Aliyun db
 Adding ip to Aliyun whitelist is a prerequisite
