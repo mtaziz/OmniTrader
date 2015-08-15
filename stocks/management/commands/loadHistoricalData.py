@@ -15,7 +15,7 @@ def importHistoricalDataForStock(ticker=str):
     stock = Stock.objects.get(ticker=ticker)
     # add corresponding suffix according to the market(ss for Shanghai while sz for Shenzhen
     url = 'http://table.finance.yahoo.com/table.csv?s='+ticker+(ticker.startswith('60') and '.ss' or '.sz')
-    print('Import day quote data for {}({}) from source: {}'.format(stock.name,stock.ticker,url))
+    print('{} - import day quote data for {}({}) from source: {}'.format(multiprocessing.current_process().name,stock.name,stock.ticker,url))
     response = urllib.request.urlopen(url)
     reader = csv.reader(codecs.iterdecode(response, 'utf-8'))
 
@@ -31,12 +31,13 @@ class Command(BaseCommand):
     help = 'Load historical data for stocks'
 
     def add_arguments(self, parser):
+        print('add arguments')
         parser.add_argument('--ticker', nargs='?', type=str, help='tickers of the stocks to be imported')
         parser.add_argument('--all', action='store_true', default=False, help='import all stocks')
 
     def handle(self, *args, **options):
         if options['all']==True:
-            pool = multiprocessing.Pool(50)
+            pool = multiprocessing.Pool(5)
             pool.map(importHistoricalDataForStock, Stock.objects.values_list('ticker',flat=True))
         elif options['ticker']!=None:
             for ticker in options['ticker']:
