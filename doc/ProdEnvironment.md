@@ -6,4 +6,6 @@ Prod environment is now on Aliyun. The runtime environment is python3.4. Always 
 > $ sudo pip3.4 install [package name]
 
 ## How to import initial data
-> $ python3.4 migrate loaddata
+> $ python3.4 migrate loaddata all-stocks
+
+You can also change 'all-stocks' to other json fixtures at stocks/fixtures
