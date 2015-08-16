@@ -21,8 +21,8 @@ from urllib.error import HTTPError, URLError
 @transaction.atomic
 def importHistoricalDataForStock(ticker=str):
     
-    if  not ticker.startswith('60'):
-        return
+    #if  not ticker.startswith('603'):
+    #    return
 
     stock = Stock.objects.get(ticker=ticker)
     # Skip stocks that already loaded
@@ -37,7 +37,7 @@ def importHistoricalDataForStock(ticker=str):
         print('{} - import day quote data for {}({}) from source: {}'.format(threading.get_ident(),stock.name,stock.ticker,url))
         try:
 
-            response = urllib.request.urlopen(url,timeout=60)
+            response = urllib.request.urlopen(url,timeout=300)
             reader = csv.reader(codecs.iterdecode(response, 'utf-8'))
 
             #skip first header row
@@ -50,7 +50,7 @@ def importHistoricalDataForStock(ticker=str):
             print('{} - "HTTP or URL Error! - {}({})'.format(threading.get_ident(),stock.name,stock.ticker))
             transaction.rollback()
             return
-        except TimeoutError:
+        except timeout:
             print('{} - "Timeout - {}({})'.format(threading.get_ident(),stock.name,stock.ticker))
             transaction.rollback()
             return
@@ -70,6 +70,7 @@ class Command(BaseCommand):
             with ThreadPoolExecutor(max_workers=50) as executor:
                 tickers = Stock.objects.values_list('ticker',flat=True);
                 executor.map(importHistoricalDataForStock, tickers)
+                executor.shutdown(wait=True)
         elif options['ticker']!=None:
             for ticker in options['ticker'].split(','):
                 try:
