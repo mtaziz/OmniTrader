@@ -17,7 +17,7 @@ class StockTagRel(models.Model):
     tag = models.ForeignKey(Tag)
 
 class DayData(models.Model):
-    stock = models.ForeignKey(Stock)
+    stock = models.ForeignKey(Stock, related_name='dayHist')
     date = models.DateField()
     # blank for validation while null for db storage
     open = models.DecimalField(max_digits=6,decimal_places=2,blank=True,null=True)
