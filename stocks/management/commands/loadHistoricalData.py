@@ -46,16 +46,16 @@ def importHistoricalDataForStock(ticker=str):
             for row in reader:
                 obj = DayData(stock=stock,date=row[0],open=row[1],high=row[2],low=row[3],close=row[4],volume=row[5],adj_close=row[6])
                 obj.save()
+
+            time.sleep(1)
         except(HTTPError, URLError) as error:
             print('{} - "HTTP or URL Error! - {}({})'.format(threading.get_ident(),stock.name,stock.ticker))
-            transaction.rollback()
-            return
+            transaction.set_rollback(True)
         except timeout:
             print('{} - "Timeout - {}({})'.format(threading.get_ident(),stock.name,stock.ticker))
-            transaction.rollback()
-            return
+            transaction.set_rollback(True)
         else:
-            time.sleep(1)
+            print('{} - "Unknown error - {}({})'.format(threading.get_ident(),stock.name,stock.ticker))
 
 class Command(BaseCommand):
     help = 'Load historical data for stocks'
@@ -78,7 +78,7 @@ class Command(BaseCommand):
                 except Stock.DoesNotExist:
                     print('Stock "%s" does not exist' % ticker)
                     next
-                self.stdout.write('Successfully imported day data for stock "%s"' % ticker)
+                #self.stdout.write('Successfully imported day data for stock "%s"' % ticker)
         else:
             print('Error: Please specify the tickers or use --all option')
 
