@@ -1,6 +1,7 @@
-from django.core.management.base import BaseCommand, CommandError
+ï»¿from django.core.management.base import BaseCommand, CommandError
 from stocks.models import Stock, DayData
 from django.db import transaction
+from datetime import date
 
 import json
 import random
@@ -10,9 +11,9 @@ import csv
 import datetime
 
 # sample csv file
-#´úÂë	    Ãû³Æ	    ÏÖ¼Û	    ×ÜÊÖ	        ¿ªÅÌ	    ×î¸ß  	×îµÍ
-#SZ000001	Æ½°²ÒøÐÐ	12.54	67964257	12.61	12.69	12.45
-#SZ000002	Íò  ¿Æ£Á	14.76	127326271	14.78	14.82	14.57
+#ï¿½ï¿½ï¿½ï¿½	    ï¿½ï¿½ï¿½ï¿½	    ï¿½Ö¼ï¿½	    ï¿½ï¿½ï¿½ï¿½	        ï¿½ï¿½ï¿½ï¿½	    ï¿½ï¿½ï¿½  	ï¿½ï¿½ï¿½
+#SZ000001	Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	12.54	67964257	12.61	12.69	12.45
+#SZ000002	ï¿½ï¿½  ï¿½Æ£ï¿½	14.76	127326271	14.78	14.82	14.57
 
 # This script is a command tool for loading EOD data of a specific day from a csv file
 # Usage: 
@@ -26,10 +27,12 @@ class Command(BaseCommand):
         return
 
     def handle(self, *args, **options):
-        self.exportFromFile(r'C:\Users\Andrew\Desktop\20150817.csv')
+        today = time.strftime('%Y%m%d')
+        print('Load day data - {}'.format(today))
+        self.exportFromFile(r'C:\Users\Andrew\Desktop\{}.csv'.format(today),date.today())
 
     @transaction.atomic
-    def exportFromFile(self, path:str):
+    def exportFromFile(self, path:str,date):
         with open(path) as csvfile:
             data  = csv.reader(csvfile,delimiter = ',')
             header = next(data)
@@ -37,12 +40,10 @@ class Command(BaseCommand):
             for row in data:
                 ticker=row[0][2:].strip()
                 try:
-                    #print(ticker)
-                    date = datetime.date(2015,8,17)
                     stock = Stock.objects.get(ticker=ticker)
                     if DayData.objects.filter(stock=stock, date=date).exists():
                         #record exists, skip
-                        print('{} - {} - {} - {} - {} - {} - {}'.format(stock.ticker,stock.name,row[2],row[3],row[4],row[5],row[6]))
+                        print('{} - {} exists - skipped'.format(stock.ticker,date))
                     else:
                         if row[3].isdigit() and int(row[3]) > 0:
                             obj = DayData(stock=stock,date=date,open=row[4],high=row[5],low=row[6],close=row[2],volume=row[3])
