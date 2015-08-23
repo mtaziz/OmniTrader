@@ -6,6 +6,7 @@ from .models import Stock, Tag, DayData
 from django.http.response import JsonResponse
 import json
 from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
@@ -56,10 +57,8 @@ def getDayData(request, stock_ticker):
     try:
         stock = Stock.objects.get(ticker=stock_ticker)
         #print(DayData.objects.filter(stock=stock).values())
-        raw = list(DayData.objects.filter(stock=stock).values())
-        print(raw)
-        data = serializers.serialize('json',raw)
-        return JsonResponse({'data':data})
+        raw = list(DayData.objects.filter(stock=stock,volume__gt=0).values())
+        return JsonResponse({'data':json.dumps(raw,cls=DjangoJSONEncoder)})
 
     except Stock.DoesNotExist:
         raise Http404("Stock does not exist")
