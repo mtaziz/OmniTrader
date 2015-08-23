@@ -9,7 +9,9 @@ from django.core import serializers
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the stocks index.")
+    #return HttpResponse("Hello, world. You're at the stocks index.")
+    return render(request, 'general/base.html', {})
+
 
 
 def detail(request, stock_ticker):
@@ -47,10 +49,16 @@ def attachtag(request, stock_ticker):
     else:
         return render(request, 'stocks/attachtag.html', {'stock': stock})
     
+def dayData(request, stock_ticker):
+    return render(request, 'stocks/daydata.html',{'ticker': stock_ticker})
+
 def getDayData(request, stock_ticker):
     try:
         stock = Stock.objects.get(ticker=stock_ticker)
-        data = serializers.serialize('json',DayData.objects.filter(stock=stock))
+        #print(DayData.objects.filter(stock=stock).values())
+        raw = list(DayData.objects.filter(stock=stock).values())
+        print(raw)
+        data = serializers.serialize('json',raw)
         return JsonResponse({'data':data})
 
     except Stock.DoesNotExist:
