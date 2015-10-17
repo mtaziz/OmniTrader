@@ -1,4 +1,4 @@
-"""
+﻿"""
 Django settings for OmniTrader project.
 
 For more information on this file, see
@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'xlrd',
     'django_admin_bootstrapped',
     'autocomplete_light',
     'django.contrib.admin',

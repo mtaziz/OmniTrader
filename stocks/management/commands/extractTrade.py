@@ -1,11 +1,15 @@
 ﻿from django.core.management.base import BaseCommand, CommandError
 
 from django.db import transaction
+import xlrd
+
+
 
 @transaction.atomic
 def extractTrade(path=str):
     print('')
     
+# Sample trade log xls: ./stocks/assets/sample.xls
 class Command(BaseCommand):
     help = 'Extract trades from pnl sheets'
     print('test')
@@ -17,12 +21,33 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print(help)
-        f = open(r'F:\BaiduSync\trade\ҵ����\������2015-09-10����.xls','r')
-
-
-
+        workbook = xlrd.open_workbook(r'./stocks/assets/sample.xls')
+        worksheet = workbook.sheet_by_index(0)
+        start_row = 3
+        end_row = 26
+        start_col = 1
+        end_col = 25
+        curr_row = start_row
+        curr_col = start_col
+        ticker = ''
+        while curr_col < end_col:
+            while curr_row < end_row:
+                row = worksheet.row(curr_row)
+                print('Row:{}'.format(curr_row))
+                curr_cell = 0
+                while curr_cell < 5:
+                    # Cell Types: 0=Empty, 1=Text, 2=Number, 3=Date, 4=Boolean, 5=Error, 6=Blank
+                    cell_type = worksheet.cell_type(curr_row, curr_col + curr_cell)
+                    cell_value = worksheet.cell_value(curr_row, curr_col + curr_cell)
+                    if cell_value != '':
+                        print (' {} : {}'.format(cell_type,cell_value))
+                    
+                    curr_cell += 1
+                curr_row += 1
+            curr_col += 5
 
         return
+
         if options['all']==True:
             with ThreadPoolExecutor(max_workers=self.worker_num) as executor:
                 tickers = Stock.objects.values_list('ticker',flat=True);
