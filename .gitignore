@@ -73,7 +73,4 @@ target/
 /obj/Debug/web.debug.config
 /obj/Debug/__init__.py
 /obj/Debug/__main__.py
-/OmniTrader.pyproj
-/OmniTrader.sln
-/OmniTrader.v12.suo
 /web.config

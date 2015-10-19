@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>OmniTrader</Name>
+    <RootNamespace>OmniTrader</RootNamespace>
+    <DjangoSettingsModule>$(MSBuildProjectName).settings_uat</DjangoSettingsModule>
+    <WebBrowserPort>12345</WebBrowserPort>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ce6cd14b-0a99-4aff-a423-abd2248cade4</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="manage.py" />
+    <Compile Include="OmniTrader\settings_uat.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\admin.py" />
+    <Compile Include="stocks\assets\all-stocks.csv" />
+    <Compile Include="stocks\assets\haitong.csv" />
+    <Compile Include="stocks\assets\rzrq.csv" />
+    <Compile Include="stocks\assets\stocklist.csv" />
+    <Compile Include="stocks\assets\taglist.csv" />
+    <Compile Include="stocks\assets\zxg.csv" />
+    <Compile Include="stocks\fixtures\all-stocks.json" />
+    <Compile Include="stocks\fixtures\stocklist.json" />
+    <Compile Include="stocks\fixtures\taglist.json" />
+    <Compile Include="stocks\management\commands\createJsonData.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\management\commands\extractTrade.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\management\commands\loadSingleDay.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\migrations\0001_initial.py" />
+    <Compile Include="stocks\migrations\0002_stock_active.py" />
+    <Compile Include="stocks\migrations\0003_auto_20150418_1434.py" />
+    <Compile Include="stocks\migrations\__init__.py" />
+    <Compile Include="stocks\migrations\__pycache__\0001_initial.cpython-34.pyc" />
+    <Compile Include="stocks\migrations\__pycache__\0002_stock_active.cpython-34.pyc" />
+    <Compile Include="stocks\migrations\__pycache__\0003_auto_20150418_1434.cpython-34.pyc" />
+    <Compile Include="stocks\migrations\__pycache__\__init__.cpython-34.pyc" />
+    <Compile Include="stocks\models.py" />
+    <Compile Include="stocks\templates\stocks\attachtag.html" />
+    <Compile Include="stocks\templates\stocks\detail.html" />
+    <Compile Include="stocks\templates\tags\detail.html" />
+    <Compile Include="stocks\tests.py" />
+    <Compile Include="stocks\urls.py" />
+    <Compile Include="stocks\views.py" />
+    <Compile Include="stocks\__init__.py" />
+    <Compile Include="stocks\__pycache__\admin.cpython-34.pyc" />
+    <Compile Include="stocks\__pycache__\models.cpython-34.pyc" />
+    <Compile Include="stocks\__pycache__\tests.cpython-34.pyc" />
+    <Compile Include="stocks\__pycache__\urls.cpython-34.pyc" />
+    <Compile Include="stocks\__pycache__\views.cpython-34.pyc" />
+    <Compile Include="stocks\__pycache__\__init__.cpython-34.pyc" />
+    <Compile Include="stocks\management\commands\loadHistoricalData.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OmniTrader\settings.py" />
+    <Compile Include="OmniTrader\settings_prod.py" />
+    <Compile Include="OmniTrader\settings_qa.py" />
+    <Compile Include="OmniTrader\urls.py" />
+    <Compile Include="OmniTrader\wsgi.py" />
+    <Compile Include="OmniTrader\__init__.py" />
+    <Compile Include="OmniTrader\__pycache__\settings.cpython-34.pyc" />
+    <Compile Include="OmniTrader\__pycache__\settings_prod.cpython-34.pyc" />
+    <Compile Include="OmniTrader\__pycache__\urls.cpython-34.pyc" />
+    <Compile Include="OmniTrader\__pycache__\wsgi.cpython-34.pyc" />
+    <Compile Include="OmniTrader\__pycache__\__init__.cpython-34.pyc" />
+    <!--
+	
+    <Compile Include="stocks\models.py" />
+    <Compile Include="stocks\tests.py" />
+    <Compile Include="stocks\views.py" />
+    <Compile Include="stocks\urls.py" />
+    <Compile Include="stocks\admin.py" />
+    <Compile Include="stocks\__init__.py" />
+    <Compile Include="OmniTrader\__init__.py" />
+    <Compile Include="OmniTrader\settings.py" />
+    <Compile Include="OmniTrader\urls.py" />
+    <Compile Include="OmniTrader\wsgi.py" />
+	-->
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="doc\" />
+    <Folder Include="OmniTrader\__pycache__\" />
+    <Folder Include="stocks\" />
+    <Folder Include="OmniTrader\" />
+    <Folder Include="stocks\assets\" />
+    <Folder Include="stocks\fixtures\" />
+    <Folder Include="stocks\management\commands\" />
+    <Folder Include="stocks\management\commands\__pycache__\" />
+    <Folder Include="stocks\migrations\" />
+    <Folder Include="stocks\migrations\__pycache__\" />
+    <Folder Include="stocks\management\" />
+    <Folder Include="stocks\static\" />
+    <Folder Include="stocks\static\amcharts\" />
+    <Folder Include="stocks\static\amcharts\images\" />
+    <Folder Include="stocks\static\amcharts\lang\" />
+    <Folder Include="stocks\static\amcharts\patterns\" />
+    <Folder Include="stocks\static\amcharts\patterns\black\" />
+    <Folder Include="stocks\static\amcharts\patterns\chalk\" />
+    <Folder Include="stocks\static\amcharts\patterns\white\" />
+    <Folder Include="stocks\static\amcharts\plugins\" />
+    <Folder Include="stocks\static\amcharts\plugins\dataloader\" />
+    <Folder Include="stocks\static\amcharts\plugins\dataloader\examples\" />
+    <Folder Include="stocks\static\amcharts\plugins\dataloader\examples\data\" />
+    <Folder Include="stocks\static\amcharts\plugins\dataloader\lang\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\examples\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\examples\images\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\lang\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\blob.js\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\fabric.js\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\FileSaver.js\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\jszip\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\pdfmake\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\libs\xlsx\" />
+    <Folder Include="stocks\static\amcharts\plugins\export\shapes\" />
+    <Folder Include="stocks\static\amcharts\plugins\responsive\" />
+    <Folder Include="stocks\static\amcharts\plugins\responsive\examples\" />
+    <Folder Include="stocks\static\amcharts\plugins\responsive\examples\images\" />
+    <Folder Include="stocks\static\amcharts\themes\" />
+    <Folder Include="stocks\static\jquery\" />
+    <Folder Include="stocks\static\stocks\" />
+    <Folder Include="stocks\templates\" />
+    <Folder Include="stocks\templates\general\" />
+    <Folder Include="stocks\templates\stocks\" />
+    <Folder Include="stocks\templates\tags\" />
+    <Folder Include="stocks\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="db.sqlite3" />
+    <Content Include="doc\**" />
+    <Content Include="stocks\**" />
+    <Content Include="OmniTrader\*" />
+    <!--
+    <Content Include="doc\prerequisite.md" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\app\scripts\respond.js" />
+    <Content Include="app\static\app\scripts\respond.min.js" />
+    <Content Include="app\static\app\scripts\_references.js" />
+    <Content Include="app\templates\app\about.html" />
+    <Content Include="app\templates\app\contact.html" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\layout.html" />
+    <Content Include="app\templates\app\login.html" />
+    <Content Include="app\templates\app\loginpartial.html" />
+	
+	-->
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
