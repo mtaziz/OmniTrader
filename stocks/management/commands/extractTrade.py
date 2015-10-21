@@ -1,7 +1,10 @@
 ﻿from django.core.management.base import BaseCommand, CommandError
 
 from django.db import transaction
+from stocks.models import Trade,Trader,Account,Stock
 import xlrd
+import os
+import re
 
 
 
@@ -19,8 +22,8 @@ class Command(BaseCommand):
         parser.add_argument('--ticker', nargs='?', type=str, help='tickers of the stocks to be imported')
         parser.add_argument('--all', action='store_true', default=False, help='import all stocks')
 
-    def handle(self, *args, **options):
-        print(help)
+
+    def process(self):
         workbook = xlrd.open_workbook(r'./stocks/assets/sample.xls')
         worksheet = workbook.sheet_by_index(0)
         start_row = 3
@@ -46,6 +49,31 @@ class Command(BaseCommand):
                 curr_row += 1
             curr_col += 5
 
+
+    def getFiles(self):
+        files = []
+
+        i = 0
+        print(r"The following trade logs are available under F:\BaiduSync\trade\业绩单")
+        for dirname, dirnames, filenames in os.walk(r'F:\BaiduSync\trade\业绩单'):
+            #for subdirname in dirnames:
+            #    print(os.path.join(dirname, subdirname))
+                
+            
+            for filename in filenames:
+                res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
+                if res:
+                    #trade = Trade()
+                    i += 1
+                    files.append(os.path.join(dirname, filename))
+                    print(res.group(1))
+        #print("Input the id of the file you want to import:")
+        #selection = int(input())
+
+    def handle(self, *args, **options):
+        print(help)
+        self.getFiles()
+       
         return
 
         if options['all']==True:

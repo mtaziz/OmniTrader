@@ -15,3 +15,8 @@ set DJANGO_SETTINGS_MODULE=OmniTrader.settings_uat
 
 # Connecting app to Aliyun db
 Adding ip to Aliyun whitelist is a prerequisite
+
+# Load fixtures into database
+Command:
+manage.py loaddata [fixture-name-without-json-suffix] 
+Note that if fixture contains Chinese character it needs to be stored as utf8 WITHOUT signature so that django could decode it. Change it via File-> Advanced save options
