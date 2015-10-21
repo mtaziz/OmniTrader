@@ -33,17 +33,17 @@ class DayData(models.Model):
     class Meta:
         index_together = ['stock','date'] 
         unique_together = ('stock', 'date')
-
-class Trade(models.Model):
-    price = models.DecimalField(max_digits=6,decimal_places=2)
-    quantity = models.IntegerField()
-    stock = models.ForeignKey(Stock, related_name='trades')
-    trader = models.ForeignKey(Trader, related_name='trades')
-    account = models.ForeignKey(Account, related_name='trades')
-
-
+        
 class Account(models.Model):
     name = models.CharField(max_length=127)
 
 class Trader(models.Model):
     name = models.CharField(max_length=127)
+
+class Trade(models.Model):
+    price = models.DecimalField(max_digits=6,decimal_places=2)
+    quantity = models.IntegerField()
+    stock = models.ForeignKey(Stock, related_name='trades')
+    trader = models.ForeignKey(Trader, related_name='trades',blank=True, null=True)
+    account = models.ForeignKey(Account, related_name='trades',blank=True, null=True)
+
