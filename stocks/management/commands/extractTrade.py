@@ -1,10 +1,11 @@
-﻿from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 
 from django.db import transaction
 from stocks.models import Trade,Trader,Account,Stock
 import xlrd
 import os
 import re
+from math import log10
 
 
 
@@ -14,17 +15,24 @@ def extractTrade(path=str):
     
 # Sample trade log xls: ./stocks/assets/sample.xls
 class Command(BaseCommand):
-    help = 'Extract trades from pnl sheets'
-    print('test')
-    worker_num = 10
 
     def add_arguments(self, parser):
-        parser.add_argument('--ticker', nargs='?', type=str, help='tickers of the stocks to be imported')
-        parser.add_argument('--all', action='store_true', default=False, help='import all stocks')
+        parser.add_argument('--dir', nargs='?', type=str, help='directories of trade logs')
+        parser.add_argument('--dry', action='store_true', default=False, help='dry run if true')
 
 
-    def process(self):
-        workbook = xlrd.open_workbook(r'./stocks/assets/sample.xls')
+    @transaction.atomic
+    def process(self, dirname, filename, dry):
+        trader = None
+        account = None
+        time = None
+        res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
+        if res:
+            trader = Trader.objects.get(name=res.group(3))
+            time = res.group(2)
+            account = Account.objects.get(name=res.group(1))
+
+        workbook = xlrd.open_workbook(os.path.join(dirname, filename))
         worksheet = workbook.sheet_by_index(0)
         start_row = 3
         end_row = 26
@@ -32,65 +40,78 @@ class Command(BaseCommand):
         end_col = 25
         curr_row = start_row
         curr_col = start_col
-        ticker = ''
+        count = 0
+        last_stock = None
         while curr_col < end_col:
             while curr_row < end_row:
                 row = worksheet.row(curr_row)
-                print('Row:{}'.format(curr_row))
-                curr_cell = 0
-                while curr_cell < 5:
-                    # Cell Types: 0=Empty, 1=Text, 2=Number, 3=Date, 4=Boolean, 5=Error, 6=Blank
-                    cell_type = worksheet.cell_type(curr_row, curr_col + curr_cell)
-                    cell_value = worksheet.cell_value(curr_row, curr_col + curr_cell)
-                    if cell_value != '':
-                        print (' {} : {}'.format(cell_type,cell_value))
+
+                # Cell Types: 0=Empty, 1=Text, 2=Number, 3=Date, 4=Boolean, 5=Error, 6=Blank
+                buy_quant = worksheet.cell_value(curr_row, curr_col)
+                buy_price = worksheet.cell_value(curr_row, curr_col + 1)
+                sell_quant = worksheet.cell_value(curr_row, curr_col + 3)
+                sell_price = worksheet.cell_value(curr_row, curr_col + 4)
+                #cell_type = worksheet.cell_type(curr_row, curr_col + curr_cell)
+                #cell_value = worksheet.cell_value(curr_row, curr_col + curr_cell)
+                if worksheet.cell_value(curr_row, curr_col + 2)!='':
+                    ticker = int(worksheet.cell_value(curr_row, curr_col + 2))
+                    # quick fix to get Shenzhen stock ticker(add missing zeroes as prefix)
+                    if ticker<100000:
+                        ticker = "000000"[(int(log10(ticker))+1):]+str(ticker)
+                    last_stock = Stock.objects.get(ticker = str(ticker))
+
                     
-                    curr_cell += 1
+                    
+                if buy_price!='' and buy_quant!='' :
+                    trade = Trade(price=buy_price,quantity=buy_quant,stock=last_stock,trader=trader,account=account,time=time)
+                    if dry != True:
+                        trade.save()
+                    count += 1
+                if sell_price!='' and sell_quant!='' :
+                    # mark quantity to negative as a sign of sell
+                    trade = Trade(price=sell_price,quantity=0-sell_quant,stock=last_stock,trader=trader,account=account,time=time)
+                    if dry != True:
+                        trade.save()
+                    count += 1
+
                 curr_row += 1
+
+            # reset start row and move to next column session
+            curr_row = start_row
             curr_col += 5
+        print("{} - {} trades saved.".format(filename, count))
 
+        
 
-    def getFiles(self):
-        files = []
+    def handle(self, *args, **options):
+        dir = r'F:\BaiduSync\trade\业绩单'
+        dry = False
+        if options['dir']!=None:
+            dir = options['dir']
+        print('Start to extract and save trade logs under {}'.format(dir))
+        if options['dry']==True:
+            dry = True
+            print('Performing dry run')
+        #self.process(r'F:\BaiduSync\trade\业绩单\archived\201507',r'海通2015-07-30 邬迪.xls')
 
         i = 0
         print(r"The following trade logs are available under F:\BaiduSync\trade\业绩单")
         for dirname, dirnames, filenames in os.walk(r'F:\BaiduSync\trade\业绩单'):
-            #for subdirname in dirnames:
-            #    print(os.path.join(dirname, subdirname))
+            for subdirname in dirnames:
+                print(os.path.join(dirname, subdirname))
                 
             
             for filename in filenames:
                 res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
                 if res:
-                    #trade = Trade()
+                    self.process(dirname, filename, dry)
                     i += 1
-                    files.append(os.path.join(dirname, filename))
-                    print(res.group(1))
-        #print("Input the id of the file you want to import:")
-        #selection = int(input())
 
-    def handle(self, *args, **options):
-        print(help)
-        self.getFiles()
-       
+        print("{} trade logs extracted.".format(i))
+
+
         return
 
-        if options['all']==True:
-            with ThreadPoolExecutor(max_workers=self.worker_num) as executor:
-                tickers = Stock.objects.values_list('ticker',flat=True);
-                executor.map(importHistoricalDataForStock, tickers)
-                executor.shutdown(wait=True)
-        elif options['ticker']!=None:
-            for ticker in options['ticker'].split(','):
-                try:
-                    importHistoricalDataForStock(ticker)
-                except Stock.DoesNotExist:
-                    print('Stock "%s" does not exist' % ticker)
-                    next
-                #self.stdout.write('Successfully imported day data for stock "%s"' % ticker)
-        else:
-            print('Error: Please specify the tickers or use --all option')
 
 
     

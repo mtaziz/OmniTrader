@@ -46,4 +46,5 @@ class Trade(models.Model):
     stock = models.ForeignKey(Stock, related_name='trades')
     trader = models.ForeignKey(Trader, related_name='trades',blank=True, null=True)
     account = models.ForeignKey(Account, related_name='trades',blank=True, null=True)
+    time = models.DateField(blank=True,null=True)
 
