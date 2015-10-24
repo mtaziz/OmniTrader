@@ -18,11 +18,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--dir', nargs='?', type=str, help='directories of trade logs')
+        parser.add_argument('--acct', nargs='?', type=int, help='specify account id')
         parser.add_argument('--dry', action='store_true', default=False, help='dry run if true')
 
 
     @transaction.atomic
-    def process(self, dirname, filename, dry):
+    def process(self, dirname, filename, dry, acct):
         trader = None
         account = None
         time = None
@@ -31,6 +32,9 @@ class Command(BaseCommand):
             trader = Trader.objects.get(name=res.group(3))
             time = res.group(2)
             account = Account.objects.get(name=res.group(1))
+            # Skip the unspecified accounts
+            if acct!=None and account != acct:
+                return 0
 
         workbook = xlrd.open_workbook(os.path.join(dirname, filename))
         worksheet = workbook.sheet_by_index(0)
@@ -80,32 +84,31 @@ class Command(BaseCommand):
             curr_row = start_row
             curr_col += 5
         print("{} - {} trades saved.".format(filename, count))
+        return 1
 
         
 
     def handle(self, *args, **options):
         dir = r'F:\BaiduSync\trade\业绩单'
         dry = False
+        acct = None
         if options['dir']!=None:
             dir = options['dir']
         print('Start to extract and save trade logs under {}'.format(dir))
+        if options['acct']!=None:
+            acct = Account.objects.get(id=options['acct'])
+            print('Only looking at account {}'.format(acct.name))
         if options['dry']==True:
             dry = True
             print('Performing dry run')
-        #self.process(r'F:\BaiduSync\trade\业绩单\archived\201507',r'海通2015-07-30 邬迪.xls')
 
         i = 0
-        print(r"The following trade logs are available under F:\BaiduSync\trade\业绩单")
         for dirname, dirnames, filenames in os.walk(r'F:\BaiduSync\trade\业绩单'):
-            for subdirname in dirnames:
-                print(os.path.join(dirname, subdirname))
-                
             
             for filename in filenames:
                 res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
                 if res:
-                    self.process(dirname, filename, dry)
-                    i += 1
+                    i += self.process(dirname, filename, dry, acct)
 
         print("{} trade logs extracted.".format(i))
 
