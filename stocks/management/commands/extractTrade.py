@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+﻿from django.core.management.base import BaseCommand, CommandError
 
 from django.db import transaction
 from stocks.models import Trade,Trader,Account,Stock
@@ -19,23 +19,13 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--dir', nargs='?', type=str, help='directories of trade logs')
         parser.add_argument('--acct', nargs='?', type=int, help='specify account id')
+        parser.add_argument('--date', nargs='?', type=str, help='specify the date to load')
         parser.add_argument('--dry', action='store_true', default=False, help='dry run if true')
 
 
     @transaction.atomic
-    def process(self, dirname, filename, dry, acct):
-        trader = None
-        account = None
-        time = None
-        res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
-        if res:
-            trader = Trader.objects.get(name=res.group(3))
-            time = res.group(2)
-            account = Account.objects.get(name=res.group(1))
-            # Skip the unspecified accounts
-            if acct!=None and account != acct:
-                return 0
-
+    def process(self, dirname, filename, dry, account, trader, time):
+        
         workbook = xlrd.open_workbook(os.path.join(dirname, filename))
         worksheet = workbook.sheet_by_index(0)
         start_row = 3
@@ -92,12 +82,16 @@ class Command(BaseCommand):
         dir = r'F:\BaiduSync\trade\业绩单'
         dry = False
         acct = None
+        date = None
         if options['dir']!=None:
             dir = options['dir']
         print('Start to extract and save trade logs under {}'.format(dir))
         if options['acct']!=None:
             acct = Account.objects.get(id=options['acct'])
             print('Only looking at account {}'.format(acct.name))
+        if options['date']!=None:
+            date = options['date']
+            print('Load date {}'.format(date))
         if options['dry']==True:
             dry = True
             print('Performing dry run')
@@ -108,7 +102,18 @@ class Command(BaseCommand):
             for filename in filenames:
                 res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",filename)
                 if res:
-                    i += self.process(dirname, filename, dry, acct)
+                    trader = None
+                    account = None
+                    time = None
+                    trader = Trader.objects.get(name=res.group(3))
+                    time = res.group(2)
+                    account = Account.objects.get(name=res.group(1))
+                    # Skip the unspecified accounts and dates
+                    if acct!=None and account != acct:
+                        continue
+                    if date!=None and time !=date:
+                        continue
+                    i += self.process(dirname, filename, dry, acct, trader, date)
 
         print("{} trade logs extracted.".format(i))
 
