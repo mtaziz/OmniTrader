@@ -59,6 +59,7 @@ class Command(BaseCommand):
                 if buy_price!='' and buy_quant!='' :
                     trade = Trade(price=buy_price,quantity=buy_quant,stock=last_stock,trader=trader,account=account,time=time)
                     if dry != True:
+                        #print("{} {}".format(buy_price,buy_quant))
                         trade.save()
                     count += 1
                 if sell_price!='' and sell_quant!='' :
@@ -113,7 +114,7 @@ class Command(BaseCommand):
                         continue
                     if date!=None and time !=date:
                         continue
-                    i += self.process(dirname, filename, dry, acct, trader, date)
+                    i += self.process(dirname, filename, dry, account, trader, date)
 
         print("{} trade logs extracted.".format(i))
 
