@@ -3,6 +3,7 @@
 from OmniTrader.settings import *
 DEBUG = False
 TEMPLATE_DEBUG = False
+ALLOWED_HOSTS = 'www.andrewmorro.com'
 
 
 DATABASES = {
@@ -15,3 +16,5 @@ DATABASES = {
         'PORT': '3306'
     }
 }
+
+STATIC_ROOT = '/opt/static'
