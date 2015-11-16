@@ -1,9 +1,9 @@
-# Prod settings
+﻿# Prod settings
 
 from OmniTrader.settings import *
 DEBUG = False
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = 'www.andrewmorro.com'
+ALLOWED_HOSTS = 'trade.andrewmorro.com'
 
 
 DATABASES = {
