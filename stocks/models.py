@@ -47,4 +47,5 @@ class Trade(models.Model):
     trader = models.ForeignKey(Trader, related_name='trades',blank=True, null=True)
     account = models.ForeignKey(Account, related_name='trades',blank=True, null=True)
     time = models.DateField(blank=True,null=True)
+    comment = models.TextField(blank=True,null=True)
 
