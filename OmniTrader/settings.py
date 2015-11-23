@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'xlrd',
     'django_admin_bootstrapped',
     'autocomplete_light',
+    'djangular',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

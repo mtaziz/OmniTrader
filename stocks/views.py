@@ -2,7 +2,7 @@
 
 # Create your views here.
 from django.http import HttpResponse, Http404
-from .models import Stock, Tag, DayData
+from .models import *
 from django.http.response import JsonResponse
 import json
 from django.core import serializers
@@ -63,4 +63,9 @@ def getDayData(request, stock_ticker):
     except Stock.DoesNotExist:
         raise Http404("Stock does not exist")
     
-        
+def trades(request, date):
+    try:
+        trades = Trade.objects.filter(time=date)
+    except Trade.DoesNotExist:
+        raise Http404("Trades does not exist")
+    return render(request, 'trades/detail.html', {'trades': trades})

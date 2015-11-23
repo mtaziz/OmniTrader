@@ -52,6 +52,9 @@
     <Compile Include="stocks\management\commands\loadSingleDay.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="stocks\management\commands\readDropBox.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\migrations\0001_initial.py" />
     <Compile Include="stocks\migrations\0002_stock_active.py" />
     <Compile Include="stocks\migrations\0003_auto_20150418_1434.py" />
@@ -66,6 +69,9 @@
     <Compile Include="stocks\templates\tags\detail.html" />
     <Compile Include="stocks\tests.py" />
     <Compile Include="stocks\urls.py" />
+    <Compile Include="stocks\utils\TradeRecordExtractor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\views.py" />
     <Compile Include="stocks\__init__.py" />
     <Compile Include="stocks\__pycache__\admin.cpython-34.pyc" />
@@ -114,6 +120,7 @@
     <Folder Include="stocks\migrations\" />
     <Folder Include="stocks\migrations\__pycache__\" />
     <Folder Include="stocks\management\" />
+    <Folder Include="stocks\utils\" />
     <Folder Include="stocks\static\" />
     <Folder Include="stocks\static\amcharts\" />
     <Folder Include="stocks\static\amcharts\images\" />
@@ -144,9 +151,11 @@
     <Folder Include="stocks\static\amcharts\plugins\responsive\examples\images\" />
     <Folder Include="stocks\static\amcharts\themes\" />
     <Folder Include="stocks\static\jquery\" />
+    <Folder Include="stocks\static\common\" />
     <Folder Include="stocks\static\stocks\" />
     <Folder Include="stocks\templates\" />
     <Folder Include="stocks\templates\general\" />
+    <Folder Include="stocks\templates\trades\" />
     <Folder Include="stocks\templates\stocks\" />
     <Folder Include="stocks\templates\tags\" />
     <Folder Include="stocks\__pycache__\" />

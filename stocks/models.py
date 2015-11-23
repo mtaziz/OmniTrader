@@ -49,3 +49,8 @@ class Trade(models.Model):
     time = models.DateField(blank=True,null=True)
     comment = models.TextField(blank=True,null=True)
 
+class TradeRecord(models.Model):
+    filename = models.CharField(max_length=127)
+    account = models.ForeignKey(Account, related_name='recordfiles')
+    trader = models.ForeignKey(Trader, related_name='recordfiles')
+    date = models.DateField()
