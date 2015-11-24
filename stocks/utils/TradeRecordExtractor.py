@@ -1,39 +1,26 @@
-
-from django.db import transaction
+﻿from django.db import transaction
 from stocks.models import *
 import xlrd
 import os
-import re
+import logging
 from django.core.exceptions import ObjectDoesNotExist
+from math import log10
+
+
+logger = logging.getLogger('stocks.utils.TradeRecordExtractor')
 
 class TradeRecordExtractor():
-    def __init__(self,filename, tempfile):
-        self.filename = filename
+
+    def __init__(self, tempfile, date, account, trader):
         self.tempfile = tempfile
-        self.dry = True
+        self.date = date
+        self.account = account
+        self.trader = trader
+        self.dry = False
 
     @transaction.atomic
     def process(self):
-        res = re.search("(.+)(\d{4}-\d{2}-\d{2})[\s+]?(.+).xls",self.filename)
-        if res:
-            try:
-                trader = Trader.objects.get(name=res.group(3))
-                date = res.group(2)
-                account = Account.objects.get(name=res.group(1))
-            except ObjectDoesNotExist:
-                print("Either the trader or account doesn't exist.")
-                return 0
-        else:
-            print("Unable to extract information from {}".format(self.filename))
-            return 0
-
-
-        if TradeRecord.objects.filter(filename=self.filename,trader = trader,account = account, date = date).count()>0 :
-            print("File {} has been loaded - skipped.".format(self.filename))
-            return 0
-            
-        tradeRecord = TradeRecord(filename = self.filename, date = date, account = account, trader = trader)
-
+        
         workbook = xlrd.open_workbook(self.tempfile)
         worksheet = workbook.sheet_by_index(0)
         start_row = 3
@@ -65,14 +52,14 @@ class TradeRecordExtractor():
                     
                     
                 if buy_price!='' and buy_quant!='' :
-                    trade = Trade(price=buy_price,quantity=buy_quant,stock=last_stock,trader=trader,account=account,time=date)
+                    trade = Trade(price=buy_price,quantity=buy_quant,stock=last_stock,trader=self.trader,account=self.account,time=self.date)
                     if self.dry != True:
                         #print("{} {}".format(buy_price,buy_quant))
                         trade.save()
                     count += 1
                 if sell_price!='' and sell_quant!='' :
                     # mark quantity to negative as a sign of sell
-                    trade = Trade(price=sell_price,quantity=0-sell_quant,stock=last_stock,trader=trader,account=account,time=date)
+                    trade = Trade(price=sell_price,quantity=0-sell_quant,stock=last_stock,trader=self.trader,account=self.account,time=self.date)
                     if self.dry != True:
                         trade.save()
                     count += 1
@@ -82,8 +69,6 @@ class TradeRecordExtractor():
             # reset start row and move to next column session
             curr_row = start_row
             curr_col += 5
-        print("{} - {} trades saved.".format(self.filename, count))
+        logger.info("{} trades saved.".format(count))
 
-        if self.dry != True:
-            tradeRecord.save()
-        return 1
+        return count
