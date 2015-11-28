@@ -158,6 +158,7 @@
     <Folder Include="stocks\templates\trades\" />
     <Folder Include="stocks\templates\stocks\" />
     <Folder Include="stocks\templates\tags\" />
+    <Folder Include="stocks\utils\__pycache__\" />
     <Folder Include="stocks\__pycache__\" />
   </ItemGroup>
   <ItemGroup>
