@@ -9,6 +9,7 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 import logging
 from django.core.management import call_command
+from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger('stocks.views')
 
@@ -73,6 +74,7 @@ def trades(request, date):
         raise Http404("Trades does not exist")
     return render(request, 'trades/detail.html', {'trades': trades})
 
+@csrf_exempt
 def webhook(request):
     if request.method == 'GET':
         logger.info("Receiving challenge : {}".format(request.GET['challenge']))
