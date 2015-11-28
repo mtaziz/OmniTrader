@@ -74,4 +74,4 @@ def trades(request, date):
 
 def webhook(request):
     logger.info(request.GET['challenge'])
-    return request.GET['challenge']
+    return HttpResponse(request.GET['challenge'])
