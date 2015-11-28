@@ -82,5 +82,6 @@ def webhook(request):
     elif request.method == 'POST':
         logger.info("Receiving notification from Dropbox")
         #TODO: run in different thread and deal with concurrency
-        #call_command('readDropBox')
+        call_command('readDropBox')
+        logger.info('Command is running...')
         return HttpResponse('')
