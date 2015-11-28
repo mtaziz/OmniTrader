@@ -27,3 +27,4 @@ logger.info('Initiating OmniTrader')
 
 logger.info("Linking to Dropbox account...")
 dbx = dropbox.Dropbox('DO8936TNbkgAAAAAAAAAg4zB4LdJK2SBNBPdjaTWM5mpzjU8dFmp1MV5DNiEXDzk')
+dbx.users_get_current_account()
