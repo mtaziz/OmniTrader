@@ -3,7 +3,8 @@
 from OmniTrader.settings import *
 DEBUG = False
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = ['.andrewmorro.com','localhost','.dropbox.com']
+#allow amazonaws for dropbox push
+ALLOWED_HOSTS = ['.andrewmorro.com','localhost','.dropbox.com','.amazonaws.com']
 
 
 DATABASES = {
