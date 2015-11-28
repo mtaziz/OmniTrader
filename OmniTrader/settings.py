@@ -104,7 +104,7 @@ LOGGING = {
     },
 }
 
-
+#This account has turned on 'less secure apps access' so that OmniTrader can use it. Change this config on google
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'omni.trader.2015@gmail.com'
