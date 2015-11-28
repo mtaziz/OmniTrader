@@ -71,5 +71,6 @@ class Command(BaseCommand):
                     processed += 1
                     tradeRecord = TradeRecord(filename = entry.name, date = date, account = account, trader = trader)
                     tradeRecord.save()
-        logger.info("Done - {} processed, {} skipped.".format(processed,skipped))
+                    logger.info("{} - success".format(entry.name))
+        logger.info("Done - {} files processed, {} skipped.".format(processed,skipped))
         return

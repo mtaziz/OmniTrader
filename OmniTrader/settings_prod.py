@@ -39,5 +39,8 @@ LOGGING = {
     'root': {
         'handlers': ['file','console'],
         'level': 'INFO',
+        'verbose': {
+        'format': '%(levelname)s %(asctime)s %(module)s: %(message)s'
+        }
     },
 }
