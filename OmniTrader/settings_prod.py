@@ -3,7 +3,7 @@
 from OmniTrader.settings import *
 DEBUG = False
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = ['.andrewmorro.com','localhost']
+ALLOWED_HOSTS = ['.andrewmorro.com','localhost','.dropbox.com']
 
 
 DATABASES = {
