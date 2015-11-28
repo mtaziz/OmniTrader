@@ -78,5 +78,6 @@ def webhook(request):
         logger.info("Receiving challenge : {}".format(request.GET['challenge']))
         return HttpResponse(request.GET['challenge'])
     elif request.method == 'POST':
+        logger.info("Receiving notification from Dropbox")
         call_command('readDropBox')
         return HttpResponse('')
