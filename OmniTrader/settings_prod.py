@@ -3,7 +3,7 @@
 from OmniTrader.settings import *
 DEBUG = False
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = 'trade.andrewmorro.com'
+ALLOWED_HOSTS = ['.andrewmorro.com','localhost']
 
 
 DATABASES = {
@@ -13,7 +13,10 @@ DATABASES = {
         'USER': 'omnitrader',
         'PASSWORD': 'omnitraderp',
         'HOST': 'cragguidebook.mysql.rds.aliyuncs.com',
-        'PORT': '3306'
+        'PORT': '3306',
+        'TEST_CHARSET': "utf8",
+        'TEST_COLLATION': "utf8_general_ci",
+        'CONN_MAX_AGE': 36000,
     }
 }
 
