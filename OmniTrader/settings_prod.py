@@ -27,20 +27,36 @@ STATIC_ROOT = '/opt/static'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters' : {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '[%(levelname)-7s] %(asctime)s - %(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+    },
     'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
         'console': {
             'class': 'logging.StreamHandler',
-        },'file': {
+        },
+        'file': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*5,  # 10 MB
+            'backupCount': 20,
+            'formatter': 'simple',
             'filename': '/var/log/OmniTrader/prod.log',
         },
     },
     'root': {
         'handlers': ['file','console'],
         'level': 'INFO',
-        'verbose': {
-        'format': '%(levelname)s %(asctime)s %(module)s: %(message)s'
-        }
     },
 }
