@@ -7,7 +7,9 @@ from django.http.response import JsonResponse
 import json
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+import logging
 
+logger = logging.getLogger('stocks.views')
 
 def index(request):
     #return HttpResponse("Hello, world. You're at the stocks index.")
@@ -69,3 +71,7 @@ def trades(request, date):
     except Trade.DoesNotExist:
         raise Http404("Trades does not exist")
     return render(request, 'trades/detail.html', {'trades': trades})
+
+def webhook(request):
+    logger.info(request.GET['challenge'])
+    return request.GET['challenge']

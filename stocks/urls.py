@@ -9,4 +9,5 @@ urlpatterns = patterns('',
                        url(r'^trades/(?P<date>[0-9]{4}-[0-9]{2}-[0-9]{2})/$', views.trades, name='trades'),
                        #Json calls
                        url(r'^(?P<stock_ticker>[0-9]+)/getdaydata/$', views.getDayData, name='getDayData'),
+                       url(r'^webhook/$', views.webhook, name='webhook'),
                        )
