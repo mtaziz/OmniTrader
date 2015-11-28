@@ -103,3 +103,10 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'omni.trader.2015@gmail.com'
+EMAIL_HOST_PASSWORD = 'omnitraderp'
+EMAIL_PORT = 587
