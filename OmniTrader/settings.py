@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'django_admin_bootstrapped',
     'autocomplete_light',
     'djangular',
+    'dropbox',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
