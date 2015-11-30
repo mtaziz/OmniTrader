@@ -14,6 +14,7 @@ from dropbox.files import DownloadError, FileMetadata
 import io
 import logging
 from django.db import transaction
+from django.core.mail import send_mail
 
 logger = logging.getLogger('stocks.management.readDropbox')
 
@@ -73,4 +74,5 @@ class Command(BaseCommand):
                     tradeRecord.save()
                     logger.info("{} - success".format(entry.name))
         logger.info("Done - {} files processed, {} skipped.".format(processed,skipped))
+        send_mail('OmniTrader - {} trade record processed'.format(processed), '', 'omni.trader.2015@gmail.com',['andrewmorro@gmail.com'], fail_silently=False)
         return

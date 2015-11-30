@@ -10,7 +10,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 import logging
 from django.core.management import call_command
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
 
 logger = logging.getLogger('stocks.views')
 
@@ -84,6 +83,5 @@ def webhook(request):
         logger.info("Receiving notification from Dropbox")
         #TODO: run in different thread and deal with concurrency
         call_command('readDropBox')
-        send_mail('OmniTrader - Dropbox change detected', '', 'omni.trader.2015@gmail.com',['andrewmorro@gmail.com'], fail_silently=False)
         #logger.info('Command is running...')
         return HttpResponse('')
