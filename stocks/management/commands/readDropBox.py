@@ -15,6 +15,8 @@ import io
 import logging
 from django.db import transaction
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
+
 
 logger = logging.getLogger('stocks.management.readDropbox')
 
@@ -30,12 +32,19 @@ def tempinput(file_):
     logger.debug('temp file deleted')
 
 class Command(BaseCommand):
+
+    
+    def add_arguments(self, parser):
+        parser.add_argument('-r', action='store_true', default=False, help='Recursively scan all the archived trade records.')
+
+
     def handle(self, *args, **options):
-        logger.info("Reading Dropbox...")
+        if options['r']==True:
+            logger.info("Recursive mode - scan all archives")
         dbx = dropbox.Dropbox('DO8936TNbkgAAAAAAAAAg4zB4LdJK2SBNBPdjaTWM5mpzjU8dFmp1MV5DNiEXDzk')
         skipped = 0
         processed = 0
-        for entry in dbx.files_list_folder('/业绩单',recursive=True).entries:
+        for entry in dbx.files_list_folder('/业绩单',recursive=options['r']).entries:
             if not isinstance(entry, FileMetadata):
                 continue
             logger.info("Processing: {}".format(entry.path_lower))
