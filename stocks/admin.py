@@ -12,11 +12,15 @@ class TraderAdmin(admin.ModelAdmin):
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['name']
 class TradeAdmin(admin.ModelAdmin):
-    list_display = ['id','time','stock_link','price','quantity','comment']
+    list_display = ['id','time','stock_link','price','quantity','account_link','comment']
+    search_fields = ('time','stock__ticker')
+    list_filter = ('time',)
+    def account_link(self, obj):
+        return obj.account.name
     def stock_link(self, obj):
-        return obj.stock.ticker
+        return obj.stock.ticker+' '+obj.stock.name
     stock_link.allow_tags = True
-
+    ordering = ('-time',)
 # Register your models here.
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Tag, TagAdmin)

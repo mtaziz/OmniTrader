@@ -9,3 +9,8 @@ Prod environment is now on Aliyun. The runtime environment is python3.4. Always 
 > $ python3.4 migrate loaddata all-stocks
 
 You can also change 'all-stocks' to other json fixtures at stocks/fixtures
+
+
+# Filenames are shown as \uxxx\uxxx
+http://stackoverflow.com/questions/20923663/unicodeencodeerror-ascii-codec-cant-encode-character-in-position-0-ordinal
+try PYTHONIOENCODING=utf-8 on prod-box(morro-bwg) so that the filename will be displayed in Chinese in putty console
