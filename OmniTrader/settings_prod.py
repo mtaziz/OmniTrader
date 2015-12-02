@@ -48,6 +48,7 @@ LOGGING = {
             'backupCount': 20,
             'formatter': 'simple',
             'filename': '/var/log/OmniTrader/prod.log',
+            'encoding': 'utf8',
         },
     },
     'root': {
