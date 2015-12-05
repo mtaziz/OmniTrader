@@ -10,6 +10,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import logging
 from django.core.management import call_command
 from django.views.decorators.csrf import csrf_exempt
+from datetime import date
 
 logger = logging.getLogger('stocks.views')
 
@@ -73,6 +74,17 @@ def trades(request, date):
     except Trade.DoesNotExist:
         raise Http404("Trades does not exist")
     return render(request, 'trades/detail.html', {'trades': trades})
+
+def report(request):
+    startDate = request.GET.get('startdate',date(1970,1,1))
+    endDate = request.GET.get('enddate', date.today())
+    raw = Trade.objects.filter(time__range=[startDate,endDate])
+    if request.GET.get('accountid',None) is not None:
+        raw = raw.filter(account__id=request.GET['accountid'])
+    if request.GET.get('stockid',None) is not None:
+        raw = raw.filter(stock__id=request.GET['stockid'])
+    return JsonResponse({'data':json.dumps(list(raw.values()),cls=DjangoJSONEncoder)})
+
 
 @csrf_exempt
 def webhook(request):

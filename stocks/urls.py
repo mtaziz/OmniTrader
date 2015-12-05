@@ -10,4 +10,5 @@ urlpatterns = patterns('',
                        #Json calls
                        url(r'^(?P<stock_ticker>[0-9]+)/getdaydata/$', views.getDayData, name='getDayData'),
                        url(r'^webhook/$', views.webhook, name='webhook'),
+                       url(r'^report/$', views.report, name='report'),
                        )

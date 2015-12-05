@@ -64,12 +64,24 @@
     <Compile Include="stocks\migrations\__pycache__\0003_auto_20150418_1434.cpython-34.pyc" />
     <Compile Include="stocks\migrations\__pycache__\__init__.cpython-34.pyc" />
     <Compile Include="stocks\models.py" />
+    <Compile Include="stocks\services\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\templates\stocks\attachtag.html" />
     <Compile Include="stocks\templates\stocks\detail.html" />
     <Compile Include="stocks\templates\tags\detail.html" />
     <Compile Include="stocks\tests.py" />
+    <Compile Include="stocks\transmodels\TradeSet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\transmodels\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\urls.py" />
     <Compile Include="stocks\utils\TradeRecordExtractor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\utils\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stocks\views.py" />
@@ -120,6 +132,8 @@
     <Folder Include="stocks\migrations\" />
     <Folder Include="stocks\migrations\__pycache__\" />
     <Folder Include="stocks\management\" />
+    <Folder Include="stocks\services\" />
+    <Folder Include="stocks\transmodels\" />
     <Folder Include="stocks\utils\" />
     <Folder Include="stocks\static\" />
     <Folder Include="stocks\static\amcharts\" />

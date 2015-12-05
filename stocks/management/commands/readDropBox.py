@@ -1,5 +1,5 @@
 ﻿from django.core.management.base import BaseCommand, CommandError
-from stocks.utils.TradeRecordExtractor import TradeRecordExtractor
+from stocks.utils import TradeRecordExtractor
 import dropbox
 from time import sleep
 import urllib3
