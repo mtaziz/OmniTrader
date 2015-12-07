@@ -40,6 +40,12 @@
     <Compile Include="stocks\assets\stocklist.csv" />
     <Compile Include="stocks\assets\taglist.csv" />
     <Compile Include="stocks\assets\zxg.csv" />
+    <Compile Include="stocks\factory\TradeSetFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\factory\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\fixtures\all-stocks.json" />
     <Compile Include="stocks\fixtures\stocklist.json" />
     <Compile Include="stocks\fixtures\taglist.json" />
@@ -71,7 +77,16 @@
     <Compile Include="stocks\templates\stocks\detail.html" />
     <Compile Include="stocks\templates\tags\detail.html" />
     <Compile Include="stocks\tests.py" />
-    <Compile Include="stocks\transmodels\TradeSet.py">
+    <Compile Include="stocks\transmodels\tradeset\DayTradeSet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\transmodels\tradeset\StockDayTradeSet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\transmodels\tradeset\StockTradeSet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stocks\transmodels\tradeset\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stocks\transmodels\__init__.py">
@@ -132,8 +147,10 @@
     <Folder Include="stocks\migrations\" />
     <Folder Include="stocks\migrations\__pycache__\" />
     <Folder Include="stocks\management\" />
+    <Folder Include="stocks\factory\" />
     <Folder Include="stocks\services\" />
     <Folder Include="stocks\transmodels\" />
+    <Folder Include="stocks\transmodels\tradeset\" />
     <Folder Include="stocks\utils\" />
     <Folder Include="stocks\static\" />
     <Folder Include="stocks\static\amcharts\" />

@@ -13,6 +13,7 @@ class AccountAdmin(admin.ModelAdmin):
     list_display = ['name']
 class TradeAdmin(admin.ModelAdmin):
     list_display = ['id','time','stock_link','price','quantity','account_link','comment']
+    readonly_fields = ('stock','account','trader')
     search_fields = ('time','stock__ticker')
     list_filter = ('time',)
     def account_link(self, obj):
