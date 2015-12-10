@@ -1,8 +1,9 @@
 ﻿# Prod settings
 
 from OmniTrader.settings import *
-DEBUG = True
-TEMPLATE_DEBUG = True
+#INTERNAL_IPS = '101.87.65.96,116.251.217.104'
+DEBUG = False
+TEMPLATE_DEBUG = False
 #allow amazonaws for dropbox push
 ALLOWED_HOSTS = ['.andrewmorro.com','localhost','.dropbox.com']
 #ALLOWED_HOSTS = ['*']
