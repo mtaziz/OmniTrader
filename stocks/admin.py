@@ -12,6 +12,10 @@ class TraderAdmin(admin.ModelAdmin):
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['name']
 class TradeAdmin(admin.ModelAdmin):
+    #Add to optimize long ttfb problem
+    #(around 2000 dup sqls without this and 40 secs for the page to load)
+    list_select_related = True
+    list_select_related = ('account', 'stock')
     list_display = ['id','time','stock_link','price','quantity','account_link','comment']
     readonly_fields = ('stock','account','trader')
     search_fields = ('time','stock__ticker')
