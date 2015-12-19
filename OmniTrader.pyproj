@@ -55,6 +55,9 @@
     <Compile Include="stocks\management\commands\extractTrade.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="stocks\management\commands\genTradeReport.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\management\commands\loadSingleDay.py">
       <SubType>Code</SubType>
     </Compile>
@@ -70,6 +73,9 @@
     <Compile Include="stocks\migrations\__pycache__\0003_auto_20150418_1434.cpython-34.pyc" />
     <Compile Include="stocks\migrations\__pycache__\__init__.cpython-34.pyc" />
     <Compile Include="stocks\models.py" />
+    <Compile Include="stocks\services\TradeReportService.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stocks\services\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -77,7 +83,7 @@
     <Compile Include="stocks\templates\stocks\detail.html" />
     <Compile Include="stocks\templates\tags\detail.html" />
     <Compile Include="stocks\tests.py" />
-    <Compile Include="stocks\transmodels\tradeset\DayTradeSet.py">
+    <Compile Include="stocks\transmodels\tradeset\TradeSet.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stocks\transmodels\tradeset\StockDayTradeSet.py">

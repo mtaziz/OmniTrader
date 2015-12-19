@@ -1,4 +1,4 @@
-
+﻿
 class StockDayTradeSet():
     def __init__(self, stock, date):
         self.stock = stock
@@ -12,18 +12,19 @@ class StockDayTradeSet():
         
     def addTrade(self,trade):
         self.trades.append(trade)
+        return self
 
     def calculate(self):
         for trade in self.trades:
             self.position += trade.quantity
-            if trade.quantity>0:
-                self.net -= trade.quantity * trade.price * 1.001
+            if trade.quantity > 0:
+                self.net -= trade.quantity * float(trade.price) * 1.0005
             else:
-                self.net -= trade.quantity * trade.price * 0.99
-            if trade.quantity <0:
-                self.volume -= trade.quantity * trade.price
+                self.net -= trade.quantity * float(trade.price) * 0.9985
+            if trade.quantity < 0:
+                self.volume -= trade.quantity * float(trade.price)
         # Day trade - calculate efficiency
-        if self.position<100 and self.position>-100:
+        if self.position < 100 and self.position > -100:
             self.positionClosed = True
             self.efficiency = self.net / self.volume
         return

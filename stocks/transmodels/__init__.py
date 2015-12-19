@@ -1,4 +1,4 @@
-class __init__(object):
-    """description of class"""
+﻿class __init__(object):
+    """Transitional models(non-persistent data)"""
 
 
