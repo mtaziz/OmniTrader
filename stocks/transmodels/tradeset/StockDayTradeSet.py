@@ -27,4 +27,5 @@ class StockDayTradeSet():
         if self.position < 100 and self.position > -100:
             self.positionClosed = True
             self.efficiency = self.net / self.volume
+        print("{} {} {} {}".format(self.stock.name, self.date, self.net, self.efficiency))
         return

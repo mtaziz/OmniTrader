@@ -27,6 +27,7 @@ class Command(BaseCommand):
             logger.info('Target date: {}'.format(date))
 
         service = TradeReportService()
+        service.setDate(date)
         service.generateReport()
 
 
