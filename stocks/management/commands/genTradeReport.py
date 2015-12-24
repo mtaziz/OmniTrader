@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+﻿from django.core.management.base import BaseCommand, CommandError
 from stocks.models import *
 
 import logging
@@ -29,7 +29,7 @@ class Command(BaseCommand):
         if options['date']!=None:
             startdate = options['date']
             enddate = options['date']
-            logger.info('Target date: {}'.format(date))
+            logger.info('Target date: {}'.format(startdate))
         elif options['startdate']!=None and options['enddate']!=None:
             startdate = options['startdate']
             enddate = options['enddate']

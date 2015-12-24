@@ -155,8 +155,11 @@
     <Folder Include="stocks\management\" />
     <Folder Include="stocks\factory\" />
     <Folder Include="stocks\services\" />
+    <Folder Include="stocks\services\__pycache__\" />
     <Folder Include="stocks\transmodels\" />
     <Folder Include="stocks\transmodels\tradeset\" />
+    <Folder Include="stocks\transmodels\tradeset\__pycache__\" />
+    <Folder Include="stocks\transmodels\__pycache__\" />
     <Folder Include="stocks\utils\" />
     <Folder Include="stocks\static\" />
     <Folder Include="stocks\static\amcharts\" />
