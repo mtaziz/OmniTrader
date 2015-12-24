@@ -15,19 +15,28 @@ class Command(BaseCommand):
     
     def add_arguments(self, parser):
         parser.add_argument('--date', nargs='?', type=str, help='specify the date to analyze')
+        parser.add_argument('--startdate', nargs='?', type=str, help='specify the start date to analyze')
+        parser.add_argument('--enddate', nargs='?', type=str, help='specify the end date to analyze')
         parser.add_argument('--month', nargs='?', type=str, help='specify the month to analyze')
         parser.add_argument('--ticker', nargs='?', type=str, help='specify the stock to analyze')
 
 
     def handle(self, *args, **options):
         logger.info("Generating trade report...")
-        date = datetime.date.today()
+        startdate = datetime.date.today()
+        enddate = datetime.date.today()
+
         if options['date']!=None:
-            date = options['date']
+            startdate = options['date']
+            enddate = options['date']
             logger.info('Target date: {}'.format(date))
+        elif options['startdate']!=None and options['enddate']!=None:
+            startdate = options['startdate']
+            enddate = options['enddate']
+            
 
         service = TradeReportService()
-        service.setDate(date)
+        service.setDate(startdate,enddate)
         service.generateReport()
 
 

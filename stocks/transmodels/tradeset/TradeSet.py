@@ -17,7 +17,7 @@ class TradeSet():
             else:
                 self.tradeDict[trade.stock] = StockTradeSet(trade.stock).addTrade(trade)
         self.calculate()
-        print("net {}, efficiency {} volume {}".format( self.net, self.efficiency,self.volume))
+        print("net {}, efficiency {} volume {}".format(self.net, self.efficiency,self.volume))
 
     def calculate(self):
         self.net = 0
@@ -27,6 +27,7 @@ class TradeSet():
             tradeSet.calculate()
             self.net += tradeSet.net
             self.volume += tradeSet.volume
-        self.efficiency = self.net / self.volume
+        if self.volume > 0:
+            self.efficiency = self.net / self.volume
             
         

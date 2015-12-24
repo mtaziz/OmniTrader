@@ -22,6 +22,9 @@ class StockTradeSet():
         self.volume = 0
         for dayTradeSet in self.tradeDict.values():
             dayTradeSet.calculate()
-            self.net += dayTradeSet.net
-            self.volume += dayTradeSet.volume
-        self.efficiency = self.net / self.volume
+            # Decide to ignore overnight position net - meaningless
+            if dayTradeSet.positionClosed:
+                self.net += dayTradeSet.net
+                self.volume += dayTradeSet.volume
+        if self.volume > 0:
+            self.efficiency = self.net / self.volume
