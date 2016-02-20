@@ -16,6 +16,10 @@ set DJANGO_SETTINGS_MODULE=OmniTrader.settings_uat
 # Connecting app to Aliyun db
 Adding ip to Aliyun whitelist is a prerequisite
 
+# Start server
+Make sure your server ip is in the whitelist of the database.
+manage.py runserver 0.0.0.0:80
+
 # Load fixtures into database
 Command:
 manage.py loaddata [fixture-name-without-json-suffix] 

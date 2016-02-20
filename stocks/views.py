@@ -8,6 +8,7 @@ import json
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 import logging
+import tushare
 from django.core.management import call_command
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
@@ -60,11 +61,14 @@ def dayData(request, stock_ticker):
 
 def getDayData(request, stock_ticker):
     try:
-        stock = Stock.objects.get(ticker=stock_ticker)
-        #print(DayData.objects.filter(stock=stock).values())
-        raw = list(DayData.objects.filter(stock=stock,volume__gt=0).values())
-        return JsonResponse({'data':json.dumps(raw,cls=DjangoJSONEncoder)})
-
+        #Old way, replaced with tushare
+        #stock = Stock.objects.get(ticker=stock_ticker)
+        #raw = list(DayData.objects.filter(stock=stock,volume__gt=0).values())
+        #return JsonResponse({'data':json.dumps(raw,cls=DjangoJSONEncoder)})
+        # data frame must be sorted in asc order so that amchart could visualise it.
+        res = tushare.get_hist_data(stock_ticker).sort_index(ascending=True)
+        res['date'] = res.index
+        return JsonResponse({'data':res.to_json(orient='records')})
     except Stock.DoesNotExist:
         raise Http404("Stock does not exist")
     

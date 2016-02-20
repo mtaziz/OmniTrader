@@ -35,27 +35,13 @@ function createStockChart() {
     }, {
         fromField: "volume",
         toField: "volume"
-    }, {
-        fromField: "value",
-        toField: "value"
     }];
     dataSet.color = "#7f8da9";
     dataSet.dataProvider = chartData;
     dataSet.title = "West Stock";
     dataSet.categoryField = "date";
-
-    var dataSet2 = new AmCharts.DataSet();
-    dataSet2.fieldMappings = [{
-        fromField: "close",
-        toField: "close"
-    }];
-    dataSet2.color = "#fac314";
-    dataSet2.dataProvider = chartData;
-    dataSet2.compared = true;
-    dataSet2.title = "East Stock";
-    dataSet2.categoryField = "date";
-
-    chart.dataSets = [dataSet, dataSet2];
+    
+    chart.dataSets = [dataSet];
 
     // PANELS ///////////////////////////////////////////
     var stockPanel = new AmCharts.StockPanel();
@@ -85,7 +71,7 @@ function createStockChart() {
     graph.fillAlphas = 1;
     graph.useDataSetColors = false;
     graph.comparable = true;
-    graph.compareField = "value";
+    graph.compareField = "close";
     graph.showBalloon = false;
     stockPanel.addStockGraph(graph);
 
@@ -99,45 +85,16 @@ function createStockChart() {
     chartCursor.valueLineAxis = valueAxis;
     stockPanel.chartCursor = chartCursor;
 
-    var stockPanel2 = new AmCharts.StockPanel();
-    stockPanel2.title = "Volume";
-    stockPanel2.percentHeight = 30;
-    stockPanel2.marginTop = 1;
-    stockPanel2.showCategoryAxis = true;
 
-    var valueAxis2 = new AmCharts.ValueAxis();
-    valueAxis2.dashLength = 5;
-    stockPanel2.addValueAxis(valueAxis2);
 
-    stockPanel2.categoryAxis.dashLength = 5;
-
-    var graph2 = new AmCharts.StockGraph();
-    graph2.valueField = "volume";
-    graph2.type = "column";
-    graph2.showBalloon = false;
-    graph2.fillAlphas = 1;
-    stockPanel2.addStockGraph(graph2);
-
-    var legend2 = new AmCharts.StockLegend();
-    legend2.markerType = "none";
-    legend2.markerSize = 0;
-    legend2.labelText = "";
-    legend2.periodValueTextRegular = "[[value.close]]";
-    stockPanel2.stockLegend = legend2;
-
-    var chartCursor2 = new AmCharts.ChartCursor();
-    chartCursor2.valueLineEnabled = true;
-    chartCursor2.valueLineAxis = valueAxis2;
-    stockPanel2.chartCursor = chartCursor2;
-
-    chart.panels = [stockPanel, stockPanel2];
+    chart.panels = [stockPanel];
 
 
     // OTHER SETTINGS ////////////////////////////////////
     var sbsettings = new AmCharts.ChartScrollbarSettings();
     sbsettings.graph = graph;
     sbsettings.graphType = "line";
-    sbsettings.usePeriod = "WW";
+    sbsettings.usePeriod = "DD";
     chart.chartScrollbarSettings = sbsettings;
 
 
@@ -146,16 +103,16 @@ function createStockChart() {
     periodSelector.position = "bottom";
     periodSelector.periods = [{
         period: "DD",
-        count: 10,
+        count: 1,
         label: "10 days"
     }, {
         period: "MM",
         selected: true,
-        count: 1,
+        count: 20,
         label: "1 month"
     }, {
         period: "YYYY",
-        count: 1,
+        count: 250,
         label: "1 year"
     }, {
         period: "YTD",

@@ -1,5 +1,6 @@
 ﻿// Setup django-angular - http://django-angular.readthedocs.org/en/latest/integration.html
-var my_app = angular.module('OmniTrader',['ng.django.forms']).config(function ($httpProvider, $interpolateProvider) {
+/**
+var my_app = angular.module('OmniTrader', ['ng.django.forms']).config(function ($httpProvider, $interpolateProvider) {
 
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -7,3 +8,5 @@ var my_app = angular.module('OmniTrader',['ng.django.forms']).config(function ($
     //$interpolateProvider.startSymbol('{$');
     //$interpolateProvider.endSymbol('$}');
 });
+
+**/
