@@ -6,7 +6,7 @@ var chartData = [];
 
 function generateChartData() {
     $.ajax({
-        url: "/stocks/"+ticker+"/getdaydata/",
+        url: "/stocks/" + ticker + "/getdaydata/",
         success: function (data) {
             chartData = jQuery.parseJSON(data.data)
             createStockChart();
@@ -15,113 +15,183 @@ function generateChartData() {
 }
 
 function createStockChart() {
-    var chart = new AmCharts.AmStockChart();
+    var chart = AmCharts.makeChart("chartdiv", {
+        "type": "stock",
+        "color": "#fff",
+        "dataSets": [{
+            "title": ticker,
+            fieldMappings: [{
+                fromField: "open",
+                toField: "open"
+            }, {
+                fromField: "close",
+                toField: "close"
+            }, {
+                fromField: "high",
+                toField: "high"
+            }, {
+                fromField: "low",
+                toField: "low"
+            }, {
+                fromField: "volume",
+                toField: "volume"
+            }],
+            "categoryField": "date",
+            "dataProvider": chartData
+        }],
+        "panels": [{
+            "title": "Value",
+            "percentHeight": 70,
 
+            "stockGraphs": [{
+                "type": "candlestick",
+                "id": "g1",
+                "openField": "open",
+                "closeField": "close",
+                "highField": "high",
+                "lowField": "low",
+                "valueField": "close",
+                "lineColor": "#fff",
+                "fillColors": "#fff",
+                "negativeLineColor": "#db4c3c",
+                "negativeFillColors": "#db4c3c",
+                "fillAlphas": 1,
+                "comparedGraphLineThickness": 2,
+                "columnWidth": 0.7,
+                "useDataSetColors": false,
+                "comparable": true,
+                "compareField": "close",
+                "showBalloon": false,
+                "proCandlesticks": true
+            }],
 
-    // DATASET //////////////////////////////////////////
-    var dataSet = new AmCharts.DataSet();
-    dataSet.fieldMappings = [{
-        fromField: "open",
-        toField: "open"
-    }, {
-        fromField: "close",
-        toField: "close"
-    }, {
-        fromField: "high",
-        toField: "high"
-    }, {
-        fromField: "low",
-        toField: "low"
-    }, {
-        fromField: "volume",
-        toField: "volume"
-    }];
-    dataSet.color = "#7f8da9";
-    dataSet.dataProvider = chartData;
-    dataSet.title = "West Stock";
-    dataSet.categoryField = "date";
-    
-    chart.dataSets = [dataSet];
+            "stockLegend": {
+                "valueTextRegular": undefined,
+                "periodValueTextComparing": "[[percents.value.close]]%"
+            }
 
-    // PANELS ///////////////////////////////////////////
-    var stockPanel = new AmCharts.StockPanel();
-    stockPanel.title = "Close";
-    stockPanel.showCategoryAxis = false;
-    stockPanel.percentHeight = 70;
+        },
 
-    var valueAxis = new AmCharts.ValueAxis();
-    valueAxis.dashLength = 5;
-    stockPanel.addValueAxis(valueAxis);
+   {
+       "title": "Volume",
+       "percentHeight": 30,
+       "marginTop": 1,
+       "columnWidth": 0.6,
+       "showCategoryAxis": false,
 
-    stockPanel.categoryAxis.dashLength = 5;
+       "stockGraphs": [{
+           "valueField": "volume",
+           "openField": "open",
+           "type": "column",
+           "showBalloon": false,
+           "fillAlphas": 1,
+           "lineColor": "#fff",
+           "fillColors": "#fff",
+           "negativeLineColor": "#db4c3c",
+           "negativeFillColors": "#db4c3c",
+           "useDataSetColors": false
+       }],
 
-    // graph of first stock panel
-    var graph = new AmCharts.StockGraph();
-    graph.type = "candlestick";
-    graph.openField = "open";
-    graph.closeField = "close";
-    graph.highField = "high";
-    graph.lowField = "low";
-    graph.valueField = "close";
-    graph.lineColor = "#7f8da9";
-    graph.fillColors = "#7f8da9";
-    graph.negativeLineColor = "#db4c3c";
-    graph.negativeFillColors = "#db4c3c";
-    graph.proCandlesticks = true;
-    graph.fillAlphas = 1;
-    graph.useDataSetColors = false;
-    graph.comparable = true;
-    graph.compareField = "close";
-    graph.showBalloon = false;
-    stockPanel.addStockGraph(graph);
+       "stockLegend": {
+           "markerType": "none",
+           "markerSize": 0,
+           "labelText": "",
+           "periodValueTextRegular": "[[value.close]]"
+       },
 
-    var stockLegend = new AmCharts.StockLegend();
-    stockLegend.valueTextRegular = undefined;
-    stockLegend.periodValueTextComparing = "[[percents.value.close]]%";
-    stockPanel.stockLegend = stockLegend;
+       "valueAxes": [{
+           "usePrefixes": true
+       }]
+   }
+        ],
 
-    var chartCursor = new AmCharts.ChartCursor();
-    chartCursor.valueLineEnabled = true;
-    chartCursor.valueLineAxis = valueAxis;
-    stockPanel.chartCursor = chartCursor;
+        "panelsSettings": {
+            "color": "#fff",
+            "plotAreaFillColors": "#333",
+            "plotAreaFillAlphas": 1,
+            "marginLeft": 60,
+            "marginTop": 5,
+            "marginBottom": 5
+        },
 
+        "chartScrollbarSettings": {
+            "graph": "g1",
+            "graphType": "line",
+            "usePeriod": "WW",
+            "backgroundColor": "#333",
+            "graphFillColor": "#666",
+            "graphFillAlpha": 0.5,
+            "gridColor": "#555",
+            "gridAlpha": 1,
+            "selectedBackgroundColor": "#444",
+            "selectedGraphFillAlpha": 1
+        },
 
+        "categoryAxesSettings": {
+            "equalSpacing": true,
+            "gridColor": "#555",
+            "gridAlpha": 1
+        },
 
-    chart.panels = [stockPanel];
+        "valueAxesSettings": {
+            "gridColor": "#555",
+            "gridAlpha": 1,
+            "inside": false,
+            "showLastLabel": true
+        },
 
+        "chartCursorSettings": {
+            "pan": true,
+            "valueLineEnabled": true,
+            "valueLineBalloonEnabled": true
+        },
 
-    // OTHER SETTINGS ////////////////////////////////////
-    var sbsettings = new AmCharts.ChartScrollbarSettings();
-    sbsettings.graph = graph;
-    sbsettings.graphType = "line";
-    sbsettings.usePeriod = "DD";
-    chart.chartScrollbarSettings = sbsettings;
+        "legendSettings": {
+            "color": "#fff"
+        },
 
+        "stockEventsSettings": {
+            "showAt": "high",
+            "type": "pin"
+        },
 
-    // PERIOD SELECTOR ///////////////////////////////////
-    var periodSelector = new AmCharts.PeriodSelector();
-    periodSelector.position = "bottom";
-    periodSelector.periods = [{
-        period: "DD",
-        count: 1,
-        label: "10 days"
-    }, {
-        period: "MM",
-        selected: true,
-        count: 20,
-        label: "1 month"
-    }, {
-        period: "YYYY",
-        count: 250,
-        label: "1 year"
-    }, {
-        period: "YTD",
-        label: "YTD"
-    }, {
-        period: "MAX",
-        label: "MAX"
-    }];
-    chart.periodSelector = periodSelector;
+        "balloon": {
+            "textAlign": "left",
+            "offsetY": 10
+        },
 
-    chart.write('chartdiv');
+        "periodSelector": {
+            "position": "bottom",
+            "periods": [{
+                "period": "DD",
+                "count": 10,
+                "label": "10D"
+            }, {
+                "period": "MM",
+                "count": 1,
+                "label": "1M"
+            }, {
+                "period": "MM",
+                "count": 6,
+                "label": "6M"
+            }, {
+                "period": "YYYY",
+                "count": 1,
+                "label": "1Y"
+            }, {
+                "period": "YYYY",
+                "count": 2,
+                "selected": true,
+                "label": "2Y"
+            }, {
+                "period": "YTD",
+                "label": "YTD"
+            }, {
+                "period": "MAX",
+                "label": "MAX"
+            }]
+        }
+
+    });
+
 }
