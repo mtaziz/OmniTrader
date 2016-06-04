@@ -5,6 +5,7 @@ import os
 import logging
 from django.core.exceptions import ObjectDoesNotExist
 from math import log10
+from builtins import Exception
 
 
 logger = logging.getLogger('stocks.utils.TradeRecordExtractor')
@@ -47,7 +48,12 @@ class TradeRecordExtractor():
                     # quick fix to get Shenzhen stock ticker(add missing zeroes as prefix)
                     if ticker<100000:
                         ticker = "000000"[(int(log10(ticker))+1):]+str(ticker)
-                    last_stock = Stock.objects.get(ticker = str(ticker))
+                    try:
+                        last_stock = Stock.objects.get(ticker = str(ticker))
+                    except:
+                        logger.error("{} does not exist".format(ticker))
+                        raise Exception("{} does not exist".format(ticker))
+                    
 
                     
                     
