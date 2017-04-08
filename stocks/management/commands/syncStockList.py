@@ -9,6 +9,7 @@ import re
 import os
 import tempfile
 import shutil
+import socket
 from contextlib import contextmanager
 from dropbox.files import DownloadError, FileMetadata
 import io
@@ -46,7 +47,19 @@ class Command(BaseCommand):
         added = 0
         changed = 0
         email_body = ''
-        stock_list = ts.get_today_all()
+        retry_count = 10
+        stock_list = None
+        for i in range(1, retry_count):
+            try:
+                stock_list = ts.get_today_all()
+                break
+            except socket.timeout:
+                continue
+        if stock_list is None:
+            logger.error("Failed to retrieve stock list from tushare - {} times tried.".format(retry_count))
+            send_mail("OmniTrader - timeout when fetching tushare stock list", "", 'omni.trader.2015@gmail.com',
+                      ['andrewmorro@gmail.com'], fail_silently=False)
+            exit(1)
         count = len(stock_list.index)
         logger.info("Tushare : {} stocks in list".format(count))
         if count < 3000:
