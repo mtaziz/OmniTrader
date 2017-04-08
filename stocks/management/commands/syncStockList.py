@@ -47,8 +47,9 @@ class Command(BaseCommand):
         changed = 0
         email_body = ''
         stock_list = ts.get_today_all()
-        if len(stock_list.index) < 3000:
-            logger.error("Stock list error - {} in list".format(len(stock_list.index)))
+        count = len(stock_list.index)
+        logger.info("Tushare : {} stocks in list".format(count))
+        if count < 3000:
             exit(1)
         stock_store = Stock.objects.all()
         for index, row in stock_list.iterrows():
