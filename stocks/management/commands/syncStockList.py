@@ -43,20 +43,37 @@ class Command(BaseCommand):
         if options['r'] == True:
             logger.info("Hard sync mode - purge stock list")
 
-
+        added = 0
+        changed = 0
+        email_body = ''
         stock_list = ts.get_today_all()
         if len(stock_list.index) < 3000:
             logger.error("Stock list error - {} in list".format(len(stock_list.index)))
             exit(1)
+        stock_store = Stock.objects.all()
         for index, row in stock_list.iterrows():
-            print(row['code'])
             try:
-                stock = Stock.objects.get(ticker = row['code'])
-                print(stock.name)
+                stock = stock_store.get(ticker = row['code'])
+                if stock.name != row['name']:
+                    with transaction.atomic():
+                        old_name = stock.name
+                        stock.name = row['name']
+                        stock.save()
+                        changed += 1
+                        msg = "{} has changed name from {} to {}".format(row['code'], old_name, row['name'])
+                        email_body += msg + '\n'
+                        logger.info(msg)
             except ObjectDoesNotExist as e:
-                print("TODO: add stock")
-            #logger.info("Done - {} files processed, {} skipped.".format(processed, skipped))
-        #send_mail('OmniTrader - {} trade record processed'.format(processed), '', 'omni.trader.2015@gmail.com',
-        # ['andrewmorro@gmail.com'], fail_silently=False)
+                with transaction.atomic():
+                    stock = Stock(ticker=row['code'], name=row['name'])
+                    stock.save()
+                    added += 1
+                    msg = "TODO: add stock {} {}".format(row['code'], row['name'])
+                    email_body += msg + '\n'
+                    logger.info(msg)
+        email_title = "OmniTrader Sync Stock List - {} stocks added, {} changed.".format(added, changed)
+        logger.info(email_title)
+        send_mail(email_title, email_body, 'omni.trader.2015@gmail.com',
+         ['andrewmorro@gmail.com'], fail_silently=False)
         return
 

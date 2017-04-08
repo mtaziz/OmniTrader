@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'xlrd',
     'django_admin_bootstrapped',
-    'autocomplete_light',
+    'dal',
     'djangular',
     'dropbox',
     'django.contrib.admin',
