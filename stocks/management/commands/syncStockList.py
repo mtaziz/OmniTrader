@@ -82,7 +82,7 @@ class Command(BaseCommand):
                     stock = Stock(ticker=row['code'], name=row['name'])
                     stock.save()
                     added += 1
-                    msg = "TODO: add stock {} {}".format(row['code'], row['name'])
+                    msg = "Add stock {} {}".format(row['code'], row['name'])
                     email_body += msg + '\n'
                     logger.info(msg)
         email_title = "OmniTrader Sync Stock List - {} stocks added, {} changed.".format(added, changed)
