@@ -36,32 +36,27 @@ def tempinput(file_):
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
-        parser.add_argument('-h', action='store_true', default=False,
+        parser.add_argument('-r', action='store_true', default=False,
                             help='Hard sync and purge the old stock list.')
 
     def handle(self, *args, **options):
-        if options['h'] == True:
+        if options['r'] == True:
             logger.info("Hard sync mode - purge stock list")
 
 
-        try:
-            stock_list = ts.get_today_all()
-            if len(stock_list.index) < 3000:
-                logger.error("Stock list error - {} in list".format(len(stock_list.index)))
-                exit(1)
-
-        except Exception:
-            logger.error("Error downloading {} - skipped".format(entry.name))
-        with tempinput(io.BytesIO(response.content)) as tempfilename:
-            with transaction.atomic():
-                extractor = TradeRecordExtractor(tempfilename, date, account, trader)
-                extractor.process()
-                response.close()
-                processed += 1
-                tradeRecord = TradeRecord(filename=entry.name, date=date, account=account, trader=trader)
-                tradeRecord.save()
-                logger.info("{} - success".format(entry.name))
-        logger.info("Done - {} files processed, {} skipped.".format(processed, skipped))
-        send_mail('OmniTrader - {} trade record processed'.format(processed), '', 'omni.trader.2015@gmail.com',
-                  ['andrewmorro@gmail.com'], fail_silently=False)
+        stock_list = ts.get_today_all()
+        if len(stock_list.index) < 3000:
+            logger.error("Stock list error - {} in list".format(len(stock_list.index)))
+            exit(1)
+        for index, row in stock_list.iterrows():
+            print(row['code'])
+            try:
+                stock = Stock.objects.get(ticker = row['code'])
+                print(stock.name)
+            except ObjectDoesNotExist as e:
+                print("TODO: add stock")
+            #logger.info("Done - {} files processed, {} skipped.".format(processed, skipped))
+        #send_mail('OmniTrader - {} trade record processed'.format(processed), '', 'omni.trader.2015@gmail.com',
+        # ['andrewmorro@gmail.com'], fail_silently=False)
         return
+
