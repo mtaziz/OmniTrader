@@ -24,3 +24,9 @@ manage.py runserver 0.0.0.0:80
 Command:
 manage.py loaddata [fixture-name-without-json-suffix] 
 Note that if fixture contains Chinese character it needs to be stored as utf8 WITHOUT signature so that django could decode it. Change it via File-> Advanced save options
+
+# Apply model changes
+1. Make migration files and make sure they are all added to the repository. This needs to be done ONLY ONCE after the model change.
+manage.py makemigrations
+2. Apply the migration files. This needs to be done on all databases(Test/QA/UAT/PROD)
+manage.py migrate

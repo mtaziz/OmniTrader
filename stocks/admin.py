@@ -2,8 +2,14 @@
 from stocks.models import *
 
 class StockAdmin(admin.ModelAdmin):
-    list_display = ['ticker','name']
+    list_display = ['ticker','name','tag_list']
 
+    #Minimize queries
+    def get_queryset(self, request):
+        return super(StockAdmin, self).get_queryset(request).prefetch_related('tags')
+    #Display tag list as suggested by taggit
+    def tag_list(self,obj):
+        return u", ".join(o.name for o in obj.tags.all())
 #class TagAdmin(admin.ModelAdmin):
 #    list_display = ['name']
 
