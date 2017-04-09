@@ -1,1 +1,3 @@
 django-taggit
+django-autocomplete-light
+django-debug-toolbar
