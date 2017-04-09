@@ -28,7 +28,7 @@ def detail(request, stock_ticker):
         raise Http404("Stock does not exist")
     return render(request, 'stocks/detail.html', {'stock': stock})
 
-
+'''
 def tags(request, tag_id):
     try:
         tag = Tag.objects.get(pk=tag_id)
@@ -55,7 +55,8 @@ def attachtag(request, stock_ticker):
         return render(request, 'stocks/detail.html', {'stock': stock})
     else:
         return render(request, 'stocks/attachtag.html', {'stock': stock})
-    
+
+'''
 def dayData(request, stock_ticker):
     return render(request, 'stocks/daydata.html',{'ticker': stock_ticker})
 

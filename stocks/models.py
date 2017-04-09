@@ -1,21 +1,14 @@
 ﻿from django.db import models
 
+from taggit.managers import TaggableManager
+
 # Create your models here.
 class Stock(models.Model):
     name = models.CharField(max_length=20)
     ticker = models.CharField(max_length=10,db_index=True)
     rzrq = models.BooleanField(default=False)
+    tags = TaggableManager()
     
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
-    stocks = models.ManyToManyField(Stock, through='StockTagRel')
-    
-
-class StockTagRel(models.Model):
-    stock = models.ForeignKey(Stock)
-    tag = models.ForeignKey(Tag)
-
 class DayData(models.Model):
     stock = models.ForeignKey(Stock, related_name='dayHist')
     date = models.DateField()
