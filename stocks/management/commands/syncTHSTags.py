@@ -29,12 +29,14 @@ import scrapy
 logger = logging.getLogger('stocks.management.syncTHSTags')
 
 
-class Command(BaseCommand,scrapy.Spider):
+class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('-r', action='store_true', default=False,
                             help='Hard sync and purge the old stock list.')
-
+    @classmethod
     def parse(self, response):
+
+        print('world')
         print(response.body)
         return ''
 
@@ -45,11 +47,10 @@ class Command(BaseCommand,scrapy.Spider):
         stock_store = Stock.objects.all()
 
         print('hello')
-        yield scrapy.Request(url='http://stockpage.10jqka.com.cn/600340/', callback=self.parse)
+        yield scrapy.Request(url='http://stockpage.10jqka.com.cn/600340/', callback=Command.parse)
 
-        print('world')
         #print(response.xpath('//dl[@class="company_details"]/dd'))
         #result = response.xpath('//dl[@class="company_details"]/dd')[1].xpath('@title').extract()
         #print(result)
-
+        return
 
