@@ -1,20 +1,30 @@
 import scrapy
+import logging
+import sys
+from scrapy.crawler import CrawlerProcess
 
 
+class ThsCrawler(scrapy.Spider):
 
-class ThsCrawler():
 
+    name = "ThsCrawler"
+    start_urls = [
+        "http://stockpage.10jqka.com.cn/600340/",
+    ]
     def parse(self,response):
-        print("world")
+        self.logger.info("world")
 
-    def send(self):
-        print("hello")
-        yield scrapy.Request(url='http://stockpage.10jqka.com.cn/600340/', callback=self.parse)
-        return
+        content = response.xpath('//dl[@class="company_details"]/dd')[1].xpath('@title').extract()
+        self.logger.info(content)
+
 
 
 crawler = ThsCrawler()
-print("before")
-crawler.send()
+crawler.logger.setLevel(logging.INFO)
+crawler.logger.info("before")
+process = CrawlerProcess()
 
-print("after")
+process.crawl(ThsCrawler)
+process.start() # the script will block here until the crawling is finished
+
+crawler.logger.info("after")
