@@ -8,5 +8,6 @@ configure the right timezone on the box
 2. TODO: Stock report via patterns job
 
 3. TODO: tag updating job
- scrapy shell http://stockpage.10jqka.com.cn/600340/
+POC:
+scrapy shell http://stockpage.10jqka.com.cn/600340/
 response.xpath('//dl[@class="company_details"]/dd')[1].xpath('@title').extract()
