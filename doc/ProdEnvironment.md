@@ -4,6 +4,11 @@ Prod environment is now on Aliyun. The runtime environment is python3.4. Always 
 Server: 45.78.14.30
 application root: /opt/OmniTrader
 
+# Deploy static data
+On Production server, it is necessary to deploy(copy) static files(css,js,images,etc.) to a place where the relative urls can get access to.
+Run the following command to tell Django copy static files to the designated place STATIC_ROOT in settings:
+> $ python3 manage.py collectstatic
+
 # Command line tool
 > $ python3.4 [args]
 > $ sudo pip3.4 install [package name]
