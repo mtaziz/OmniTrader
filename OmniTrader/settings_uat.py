@@ -2,6 +2,11 @@
 
 from OmniTrader.settings import *
 
+#DEBUG = False
+#ALLOWED_HOSTS = ['127.0.0.1','localhost']
+
+LOG_LEVEL = 'INFO'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -26,5 +31,5 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
         'level': 'INFO',
-    },
+    }
 }

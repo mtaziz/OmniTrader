@@ -15,6 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         process = CrawlerProcess({
+            'LOG_LEVEL': 'INFO',
             'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
         })
         process.crawl(ThsCrawler)

@@ -3,6 +3,7 @@ from stocks.models import *
 from scrapy.http import Request
 import logging
 import taggit
+from django.core.mail import send_mail
 
 class ThsCrawler(scrapy.Spider):
     name = "ThsCrawler"
@@ -10,8 +11,6 @@ class ThsCrawler(scrapy.Spider):
     start_urls = [
         "http://stockpage.10jqka.com.cn/600340/",
     ]
-    def ThsCrawler(self):
-        self.logger.setLevel(logging.INFO)
 
     def parseStock(self,response):
         #Trim the url to get the stock code
@@ -23,8 +22,32 @@ class ThsCrawler(scrapy.Spider):
         tagList = response.xpath('//dl[@class="company_details"]/dd')[1].xpath('@title').extract()[0].split('，')
 
         #TODO: change set tag operations to incremental update to facilitate reporting
+        newtags = [item for sublist in [tagList, [location]] for item in sublist]
+
+        oldtags = stock.tags.names()
+
+        tempDict = {}
+
+        email_body = ''
+
+        for tag in newtags:
+            if tag in oldtags:
+                #self.logger.info('{} existed - Skip'.format(tag))
+                tempDict[tag] = True
+            else:
+                self.logger.info('Add {}'.format(tag))
+                tempDict[tag] = True
+                stock.tags.add(tag)
+        for tag in oldtags:
+            if tag not in tempDict:
+                self.logger.info('Remove {}'.format(tag))
+                stock.tags.remove(tag)
+
         #self.logger.info(tagList)
-        stock.tags.set(location, *tagList)
+        #stock.tags.set(location, *tagList)
+        #send_mail('Tag sync completed', email_body, 'omni.trader.2015@gmail.com',
+        #                  ['andrewmorro@gmail.com'], fail_silently=False)
+
 
     def parse(self,response):
         stocks = Stock.objects.all()

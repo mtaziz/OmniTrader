@@ -44,8 +44,13 @@ INSTALLED_APPS = (
     'taggit',
     'stocks',
     'debug_toolbar',
+    'rest_framework',
+    'django_filters',
+    'crispy_forms',
 )
-
+MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +61,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
+
+# Requests from internal IPs trigger debug toolbar
+INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
 SESSION_ENGINE="django.contrib.sessions.backends.signed_cookies"
 
@@ -108,6 +116,18 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}
+
+
 
 #This account has turned on 'less secure apps access' so that OmniTrader can use it. Change this config on google
 EMAIL_USE_TLS = True
