@@ -38,11 +38,13 @@ class ThsCrawler(scrapy.Spider):
                 self.logger.info('Add {}'.format(tag))
                 tempDict[tag] = True
                 stock.tags.add(tag)
+        # Disable removal - Avoid removing manual tags
+        '''
         for tag in oldtags:
             if tag not in tempDict:
                 self.logger.info('Remove {}'.format(tag))
                 stock.tags.remove(tag)
-
+        '''
         #self.logger.info(tagList)
         #stock.tags.set(location, *tagList)
         #send_mail('Tag sync completed', email_body, 'omni.trader.2015@gmail.com',
