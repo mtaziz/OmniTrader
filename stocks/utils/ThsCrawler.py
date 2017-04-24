@@ -21,7 +21,6 @@ class ThsCrawler(scrapy.Spider):
         #self.logger.info(location)
         tagList = response.xpath('//dl[@class="company_details"]/dd')[1].xpath('@title').extract()[0].split('，')
 
-        #TODO: change set tag operations to incremental update to facilitate reporting
         newtags = [item for sublist in [tagList, [location]] for item in sublist]
 
         oldtags = stock.tags.names()
