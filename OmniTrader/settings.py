@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'xlutils',
     'xlrd',
     'django_admin_bootstrapped',
     'dal',

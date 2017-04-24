@@ -16,8 +16,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         process = CrawlerProcess({
             'LOG_LEVEL': 'INFO',
-            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+            'ITEM_PIPELINES': {
+                'stocks.utils.HolderCrawler.FlowValueItemPipeline': 400
+            }
         })
-        process.crawl(HolderCrawler)
+        process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\20170420.xlsx")
         process.start()  # the script will block here until the crawling is finished
+
+        print('Finished - Crawl flow value holder.')
 
