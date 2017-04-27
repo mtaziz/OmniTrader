@@ -9,12 +9,15 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ['id','name', 'slug']
 
+    def to_representation(self, obj):
+        return obj.name
+
 # Serializers define the API representation.
 class StockSerializer(serializers.HyperlinkedModelSerializer):
-    #tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True)
     class Meta:
         model = Stock
-        fields = ('name','ticker')
+        fields = ('name','ticker','tags')
 
 # ViewSets define the view behavior.
 class StockByTicker(generics.ListAPIView):
