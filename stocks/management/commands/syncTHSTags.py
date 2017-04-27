@@ -3,6 +3,7 @@ import logging
 from scrapy.crawler import CrawlerProcess
 from stocks.utils.ThsCrawler import ThsCrawler
 
+from django.core.mail import send_mail
 
 logger = logging.getLogger('stocks.management.syncTHSTags')
 
@@ -20,6 +21,9 @@ class Command(BaseCommand):
         })
         process.crawl(ThsCrawler)
         process.start()  # the script will block here until the crawling is finished
+        email_title = 'OmniTrader THS Tag Sync completed.'
+        send_mail(email_title, '', 'omni.trader.2015@gmail.com',
+                  ['andrewmorro@gmail.com'], fail_silently=False)
 
 
 
