@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 import logging
 from scrapy.crawler import CrawlerProcess
 from stocks.utils.HolderCrawler import HolderCrawler
-
+import datetime
 
 logger = logging.getLogger('stocks.management.syncTHSTags')
 
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 'stocks.utils.HolderCrawler.FlowValueItemPipeline': 400
             }
         })
-        process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\20170420.xlsx")
+        process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\{}.xlsx".format(datetime.datetime.now().strftime('%Y%m%d')))
         process.start()  # the script will block here until the crawling is finished
 
         print('Finished - Crawl flow value holder.')

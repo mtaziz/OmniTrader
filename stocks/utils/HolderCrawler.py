@@ -10,26 +10,27 @@ class FlowValueItem(scrapy.Item):
     ticker = scrapy.Field()
     row = scrapy.Field()
     flow_value = scrapy.Field()
+    total_value = scrapy.Field()
     pct = scrapy.Field()
 
 class FlowValueItemPipeline(object):
 
     FLOW_VALUE_COL = 6
+    FLOW_VALUE_COL = 5
 
     def open_spider(self, spider):
         self.wb = load_workbook(filename=spider.filepath)
 
     def close_spider(self, spider):
-        #spider.workbook_copy.save(spider.filepath)
         self.wb.save(spider.filepath)
 
 
     def process_item(self, item, spider):
-        #sheet = spider.workbook_copy.get_sheet(0)
         sheet = self.wb.worksheets[0]
-        value = round(item['flow_value']*item['pct']/100)
-        #sheet.write(item['row'], 5, value)
-        sheet.cell(row = item['row'], column = self.FLOW_VALUE_COL).value = value
+        flow_value = round(item['flow_value']*item['pct']/100, 1)
+        total_value = round(item['total_value']*item['pct']/100, 1)
+        sheet.cell(row=item['row'], column=self.FLOW_VALUE_COL).value = flow_value
+        sheet.cell(row=item['row'], column=self.TOTAL_VALUE_COL).value = total_value
 
 
 
@@ -53,6 +54,9 @@ class HolderCrawler(scrapy.Spider):
         accumulated_pct = 0
         for tr in content:
             holder = tr.xpath('th/a/text()').extract()[0]
+            pct = tr.xpath('td[3]/text()').extract()[0]
+            if pct is not float:
+                break
             pct = float(tr.xpath('td[3]/text()').extract()[0])
             if pct >= 5:
                 accumulated_pct += pct
@@ -71,9 +75,10 @@ class HolderCrawler(scrapy.Spider):
 
         item = response.request.meta['item']
         # Flow value is after 3541450 tag. Hard coding here.
-        m = re.search('3541450\"\:\"(\d+\.\d+)\"', str(response.body))
+        m = re.search('3475914\"\:\"(\d+\.\d+)\".+3541450\"\:\"(\d+\.\d+)\"', str(response.body))
         if m:
             item['flow_value'] = float(m.group(1))/100000000
+            item['total_value'] = float(m.group(2))/100000000
 
         yield item
 
