@@ -16,7 +16,7 @@ class FlowValueItem(scrapy.Item):
 class FlowValueItemPipeline(object):
 
     FLOW_VALUE_COL = 6
-    FLOW_VALUE_COL = 5
+    TOTAL_VALUE_COL = 5
 
     def open_spider(self, spider):
         self.wb = load_workbook(filename=spider.filepath)
