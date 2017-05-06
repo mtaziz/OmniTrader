@@ -9,11 +9,13 @@ logger = logging.getLogger('stocks.management.syncTHSTags')
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
-        parser.add_argument('-r', action='store_true', default=False,
-                            help='Hard sync and purge the old stock list.')
+        parser.add_argument('-d')
 
 
     def handle(self, *args, **options):
+        filename = datetime.datetime.now().strftime('%Y%m%d')
+        if options['d'] is not None:
+            filename = options['d']
         process = CrawlerProcess({
             'LOG_LEVEL': 'INFO',
             'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
@@ -21,7 +23,7 @@ class Command(BaseCommand):
                 'stocks.utils.HolderCrawler.FlowValueItemPipeline': 400
             }
         })
-        process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\{}.xlsx".format(datetime.datetime.now().strftime('%Y%m%d')))
+        process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\{}.xlsx".format(filename))
         process.start()  # the script will block here until the crawling is finished
 
         print('Finished - Crawl flow value holder.')
