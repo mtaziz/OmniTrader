@@ -28,7 +28,7 @@ class FlowValueItemPipeline(object):
     def process_item(self, item, spider):
         sheet = self.wb.worksheets[0]
         flow_value = round(item['flow_value']*item['pct']/100, 1)
-        total_value = round(item['total_value']*item['pct']/100, 1)
+        total_value = round(item['total_value'], 1)
         sheet.cell(row=item['row'], column=self.FLOW_VALUE_COL).value = flow_value
         sheet.cell(row=item['row'], column=self.TOTAL_VALUE_COL).value = total_value
 
@@ -51,17 +51,18 @@ class HolderCrawler(scrapy.Spider):
         #ticker = response.url[31:37]
 
         content = response.xpath('//div[@id="fher_1"]//tbody/tr')
-        accumulated_pct = 0
+        accumulated_pct = 0.0
         for tr in content:
             holder = tr.xpath('th/a/text()').extract()[0]
-            pct = tr.xpath('td[3]/text()').extract()[0]
-            if pct is not float:
-                break
-            pct = float(tr.xpath('td[3]/text()').extract()[0])
-            if pct >= 5:
-                accumulated_pct += pct
-            else:
-                # Holders are listed by share pct order in THS. if less than 5% then no need to go on.
+            try:
+                pct = float(tr.xpath('td[3]/text()').extract()[0])
+                if pct >= 5:
+                    accumulated_pct += pct
+                else:
+                    # Holders are listed by share pct order in THS. if less than 5% then no need to go on.
+                    break
+            except ValueError:
+                # Deal with '-' aka unknown value.
                 break
 
         item['pct'] = 100-accumulated_pct
