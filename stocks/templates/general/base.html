@@ -9,16 +9,16 @@
     {% block js %}
         <script src="{{ STATIC_URL }}common/core.js"></script>
         <script src="{{ STATIC_URL }}jquery/jquery-2.1.4.min.js"></script>
-    {% endblock %}
 
     <!-- Set CONFIG MODE -->
     <script>
-        var config_mode = '{{ CONFIG_MODE }}';
+        var config_mode = "{{ CONFIG_MODE }}";
         var root_url = 'http://trade.andrewmorro.com'
         if(config_mode != 'PROD'){
             var root_url = 'http://localhost'
         }
     </script>
+    {% endblock %}
 
 
     <!-- Sencha Touch CSS -->

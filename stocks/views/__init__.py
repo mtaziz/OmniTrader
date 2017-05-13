@@ -11,14 +11,16 @@ import logging
 import tushare
 from django.core.management import call_command
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from datetime import date
 
 logger = logging.getLogger('stocks.views')
 
 
 def index(request):
-    # return HttpResponse("Hello, world. You're at the stocks index.")
-    return render(request, 'general/base.html', {})
+    # Add CONFIG_MODE to the context so that the base template page could set environment properly
+    context = {'CONFIG_MODE': settings.CONFIG_MODE}
+    return render(request, 'general/base.html', context)
 
 
 def detail(request, stock_ticker):
