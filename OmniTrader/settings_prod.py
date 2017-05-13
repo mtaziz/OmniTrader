@@ -1,5 +1,7 @@
 ﻿# Prod settings
 
+CONFIG_MODE = 'PROD'
+
 from OmniTrader.settings import *
 #INTERNAL_IPS = '101.87.65.96,116.251.217.104'
 DEBUG = False

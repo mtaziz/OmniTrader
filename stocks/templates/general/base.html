@@ -2,30 +2,40 @@
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>{% block title %}OmniTrader{% endblock %}</title>
-    
+
     {% load staticfiles %}
     {% block js %}
         <script src="{{ STATIC_URL }}common/core.js"></script>
         <script src="{{ STATIC_URL }}jquery/jquery-2.1.4.min.js"></script>
     {% endblock %}
 
+    <!-- Set CONFIG MODE -->
+    <script>
+        var config_mode = '{{ CONFIG_MODE }}';
+        var root_url = 'http://trade.andrewmorro.com'
+        if(config_mode != 'PROD'){
+            var root_url = 'http://localhost'
+        }
+    </script>
 
+
+    <!-- Sencha Touch CSS -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}sencha/resources/css/sencha-touch.css"
+          type="text/css">
+
+    <!-- Sencha Touch JS -->
+    <script type="text/javascript" src="{{ STATIC_URL }}sencha/sencha-touch-all-debug.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}mobile/model/model.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}mobile/main.js"></script>
 
 </head>
-<body>
-    <div id="sidebar">
-        {% block sidebar %}
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/admin/">Admin</a></li>
-        </ul>
-        {% endblock %}
-    </div>
 
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+<body>
+
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
 </body>
 </html>

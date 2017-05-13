@@ -5,6 +5,9 @@ from OmniTrader.settings import *
 #DEBUG = False
 #ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
+
+CONFIG_MODE = 'UAT'
+
 LOG_LEVEL = 'INFO'
 
 DATABASES = {

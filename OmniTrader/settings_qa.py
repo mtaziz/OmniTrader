@@ -2,6 +2,9 @@
 
 from OmniTrader.settings import *
 
+CONFIG_MODE = 'QA'
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

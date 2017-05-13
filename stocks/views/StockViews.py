@@ -1,6 +1,7 @@
 
 from stocks.models import Stock
-from rest_framework import generics, serializers
+from rest_framework import generics, serializers,status
+from rest_framework.response import Response
 from taggit.models import Tag
 
 
@@ -34,8 +35,10 @@ class StockByTags(generics.ListAPIView):
     serializer_class = StockSerializer
 
     def get_queryset(self):
+        if 'tags' not in self.request.query_params or self.request.query_params['tags'] == '':
+            return
         # Split Chinese and English comma - replace Chinese comma with English comma first.
-        tags = self.kwargs['tags'].replace('，',',').split(',')
+        tags = self.request.query_params['tags'].replace('，',',').split(',')
         queryset = None
         for tag in tags:
             if queryset is None:
