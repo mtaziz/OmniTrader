@@ -3,10 +3,19 @@ tagview = Ext.create('OmniTrader.view.TagSearchView')
 Ext.define('OmniTrader.view.MainView', {
     extend: 'Ext.NavigationView',
     alias: ['omnitrader'],
-    title:'OmniTrader',
+    title: 'OmniTrader',
     config: {
         fullscreen: true,
-        items:[]
+        items: [],
+        listeners: {
+            'swipe': function (e, node, options, eOpts) {
+                if (e.direction == "right") {
+
+                    this.pop()
+                }
+            }
+        }
+
     }
 })
 
