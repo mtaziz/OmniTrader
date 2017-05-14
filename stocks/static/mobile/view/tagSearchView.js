@@ -4,13 +4,14 @@ var my_store = Ext.create("Ext.data.Store", {
         type: "ajax",
         url: root_url + "/stocks/tags/",
         extraParams: {
+            tags: '雄安',
             format: 'json'
         },
         reader: {
             type: "json"
         }
     },
-    autoLoad: false
+    autoLoad: true
 });
 
 var thestore = Ext.create('Ext.data.Store', {
@@ -20,34 +21,32 @@ var thestore = Ext.create('Ext.data.Store', {
 });
 Ext.define('OmniTrader.view.TagSearchView', {
     extend: 'Ext.Panel',
+    alias: ['ot-tagsearchview'],
+
     config: {
         layout: 'hbox',
         items: [
             {
-                xtype: 'toolbar',
+                xtype: 'textfield',
+                itemId: 'tagSearchField',
                 docked: 'top',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        id: 'tf_tags',
-                        docked: 'top',
-                        placeHolder: 'Enter tags',
-                        enableKeyEvents: true,
-                        listeners: {
-                            'action': function (field, event, options) {
-                                my_store.load({params: {tags: Ext.getCmp('tf_tags').getValue()}})
-                            }
-                        }
+                placeHolder: 'Enter tags',
+                enableKeyEvents: true,
+                listeners: {
+                    'action': function (field, event, options) {
+                        my_store.load({params: {tags: field.getValue()}})
                     }
-                ]
+                }
             }, {
                 xtype: 'list',
-                id: 'list_stocks',
                 store: my_store,
                 itemTpl: '{ticker} {name}',
                 listeners: {
-                    'itemtap': function (list,  index, target, record, e, eOpts) {
-                        Ext.Msg.alert(record.data.ticker)
+                    'itemtap': function (list, index, target, record, e, eOpts) {
+                        var detailview = Ext.create('ot-stockdetailview');
+                        detailview.viewStock(record.data)
+                        //TODO: Change hard binding to use controller.
+                        this.up().up().push(detailview)
                     }
                 },
                 flex: 1
