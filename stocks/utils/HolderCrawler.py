@@ -54,15 +54,21 @@ class HolderCrawler(scrapy.Spider):
         accumulated_pct = 0.0
         for tr in content:
             holder = tr.xpath('th/a/text()').extract()[0]
+            raw_pct = tr.xpath('td[3]/text()').extract()[0]
             try:
-                pct = float(tr.xpath('td[3]/text()').extract()[0])
+                # Deal with '-' aka unknown value.
+                if raw_pct.startswith('-'):
+                    break
+                # Deal with occassional pct sign at the end
+                if raw_pct.endswith('%'):
+                    raw_pct = raw_pct[:-1]
+                pct = float(raw_pct)
                 if pct >= 5:
                     accumulated_pct += pct
                 else:
                     # Holders are listed by share pct order in THS. if less than 5% then no need to go on.
                     break
             except ValueError:
-                # Deal with '-' aka unknown value.
                 break
 
         item['pct'] = 100-accumulated_pct

@@ -24,6 +24,7 @@ class Command(BaseCommand):
             }
         })
         process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\{}.xlsx".format(filename))
+        #process.crawl(HolderCrawler, filepath=r"C:\Users\Andrew\Desktop\20170525.xlsx")
         process.start()  # the script will block here until the crawling is finished
 
         print('Finished - Crawl flow value holder.')
